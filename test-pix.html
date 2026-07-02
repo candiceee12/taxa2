@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Teste API PIX</title>
+  <style>
+    body { font-family: Arial; max-width: 800px; margin: 20px auto; }
+    .test-box { border: 1px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    button { padding: 10px 20px; background: #0c326f; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #082654; }
+    pre { background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    .error { color: red; }
+    .success { color: green; }
+  </style>
+</head>
+<body>
+  <h1>Teste da API de PIX</h1>
+
+  <div class="test-box">
+    <h3>1. Teste simples</h3>
+    <button onclick="testAPI()">Testar API /api/generate-pix</button>
+    <div id="result1"></div>
+  </div>
+
+  <div class="test-box">
+    <h3>2. Debug Console</h3>
+    <p>Abra o console (F12) para ver os detalhes completos da requisição.</p>
+  </div>
+
+  <script>
+    async function testAPI() {
+      const resultDiv = document.getElementById('result1');
+      resultDiv.innerHTML = '<p>Testando...</p>';
+
+      try {
+        const params = new URLSearchParams({
+          amount: '4739',
+          customer_name: 'Teste Usuario',
+          customer_cpf: '05531510101',
+          customer_email: 'teste@example.com',
+          customer_phone: '11999999999'
+        });
+
+        const url = '/api/generate-pix?' + params.toString();
+        console.log('Chamando URL:', url);
+
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        console.log('Status:', response.status);
+        console.log('Status Text:', response.statusText);
+
+        const text = await response.text();
+        console.log('Resposta bruta:', text);
+
+        if (!text) {
+          resultDiv.innerHTML = '<p class="error">❌ Resposta vazia da API</p>';
+          return;
+        }
+
+        const data = JSON.parse(text);
+        console.log('Resposta JSON:', data);
+
+        if (data.success) {
+          resultDiv.innerHTML = `
+            <p class="success">✅ Sucesso!</p>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+        } else {
+          resultDiv.innerHTML = `
+            <p class="error">❌ Erro da API:</p>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        resultDiv.innerHTML = `<p class="error">❌ Erro: ${error.message}</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
