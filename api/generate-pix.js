@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
   }
 
   const productName = getRandomProductName();
-  const apiKey = 'fdc8dbab-0b26-434e-9baf-019c6e154259';
+  const apiKey = '80be7194-3181-407c-901b-6c172dba4435';
   const apiUrl = 'https://api-gateway.umbrellapag.com/api/user/transactions';
 
   const payload = {
