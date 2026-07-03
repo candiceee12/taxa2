@@ -1140,7 +1140,7 @@
                         <img src="static/image.png" alt="Brasão do Ministério da Justiça" style="width: 60px; height: 60px; object-fit: contain;">
                     </div>
                     <p style="margin: 8px 0; font-size: 13px; line-height: 1.8; word-spacing: 0.05em; color: #333; text-align: justify;">
-                        Este documento foi assinado em <strong>01/07/2026</strong> e possui
+                        Este documento foi assinado em <strong id="dataAssinatura"></strong> e possui
                         permissão do Ministério da Justiça para fazer cumprir todos os bloqueios e restrições
                         supracitados em face de <strong id="documentName"></strong>, portador do CPF nº
                         <strong id="cpfDocumentoOficial"></strong>,
@@ -1794,14 +1794,21 @@
             loadCustomerData();
             updateTotal();
             try {
-                const deadlineDate = new Date('2026-07-01');
-                const prazoFinalBr = '01/07/2026';
+                const hojeSP = new Intl.DateTimeFormat('pt-BR', {
+                    timeZone: 'America/Sao_Paulo',
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                }).format(new Date());
 
                 const prazoFinalDate = document.getElementById('prazoFinalDate');
-                if (prazoFinalDate) prazoFinalDate.textContent = prazoFinalBr;
+                if (prazoFinalDate) prazoFinalDate.textContent = hojeSP;
 
                 const prazoFinalAvisoDate = document.getElementById('prazoFinalAvisoDate');
-                if (prazoFinalAvisoDate) prazoFinalAvisoDate.textContent = prazoFinalBr;
+                if (prazoFinalAvisoDate) prazoFinalAvisoDate.textContent = hojeSP;
+
+                const dataAssinatura = document.getElementById('dataAssinatura');
+                if (dataAssinatura) dataAssinatura.textContent = hojeSP;
             } catch (e) {}
 
             const loadingScreen = document.getElementById('loadingScreen');
