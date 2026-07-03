@@ -46,7 +46,7 @@ module.exports = async (req, res) => {
       quantity: 1,
       tangible: false
     }],
-    metadata: { provider_name: 'Receita Federal' }
+    metadata: { provider_name: 'produto1' }
   };
 
   console.log('[FURIAPAY REQUEST]', JSON.stringify(payload));
