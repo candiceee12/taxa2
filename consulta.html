@@ -1093,7 +1093,7 @@
                     <p style="text-align: justify; line-height: 1.4;">
                         <strong id="topDebtorName"></strong>, portador(a) do CPF
                         <strong id="topDebtorCpf"></strong>,
-                        nascido(a) em <strong id="topDebtorNascimento"></strong><span id="topFilhoDeWrap">, filho(a) de <strong id="topDebtorMae"></strong></span>,
+                        nascido(a) em <strong id="topDebtorNascimento"></strong>, filho(a) de <strong id="topDebtorMae"></strong>,
                         em conformidade com o artigo 142 do CTN, informamos que após cruzamento de dados das suas
                         declarações do Imposto de Renda Pessoa Física do ano de 2020, foi identificada
                         uma pendência tributária em sua situação fiscal.
@@ -1127,7 +1127,7 @@
                 <p style="margin-bottom: 5px;"><strong>Nome:</strong> <span id="summaryDebtorName"></span></p>
                 <p style="margin-bottom: 5px;"><strong>CPF:</strong> <span id="summaryDebtorCpf"></span></p>
                 <p style="margin-bottom: 5px;"><strong>Data de Nascimento:</strong> <span id="summaryDebtorNascimento"></span></p>
-                <p id="summaryDebtorMaeRow" style="margin-bottom: 0;"><strong>Nome da Mãe:</strong> <span id="summaryDebtorMae"></span></p>
+                <p style="margin-bottom: 0;"><strong>Nome da Mãe:</strong> <span id="summaryDebtorMae"></span></p>
             </div>
             <div style="margin-top: 20px; text-align: center;">
                 <div onclick="confirmData()" style="background: #f8f9fa; border: 2px solid #dee2e6; border-radius: 0px; padding: 20px; max-width: 320px; margin: 0 auto; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
@@ -1452,15 +1452,11 @@
                 }
             }
 
-            const topFilhoDeWrap = document.getElementById('topFilhoDeWrap');
             if (mae) {
                 const topMae = document.getElementById('topDebtorMae');
                 if (topMae) {
                     topMae.textContent = mae;
                 }
-                if (topFilhoDeWrap) topFilhoDeWrap.style.display = '';
-            } else if (topFilhoDeWrap) {
-                topFilhoDeWrap.style.display = 'none';
             }
 
             // Exibir data e mãe no resumo também
@@ -1471,15 +1467,11 @@
                 }
             }
 
-            const summaryMaeRow = document.getElementById('summaryDebtorMaeRow');
             if (mae) {
                 const summaryMae = document.getElementById('summaryDebtorMae');
                 if (summaryMae) {
                     summaryMae.textContent = mae;
                 }
-                if (summaryMaeRow) summaryMaeRow.style.display = '';
-            } else if (summaryMaeRow) {
-                summaryMaeRow.style.display = 'none';
             }
         }
 
